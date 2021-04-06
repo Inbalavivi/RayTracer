@@ -93,45 +93,61 @@ public class RayTracer {
 				String[] params = line.substring(3).trim().toLowerCase().split("\\s+");
 
 				if (code.equals("cam"))
-				{
-                                        // Add code here to parse camera parameters
-
+				{	
+					Vector position = new Vector(Double.parseDouble(params[0]),Double.parseDouble(params[1]),Double.parseDouble(params[2]));
+					Vector lookAt = new Vector(Double.parseDouble(params[3]),Double.parseDouble(params[4]),Double.parseDouble(params[5]));
+					Vector upVec = new Vector(Double.parseDouble(params[6]),Double.parseDouble(params[7]),Double.parseDouble(params[8]));
+					float distance=Float.parseFloat(params[9]);
+					float width=Float.parseFloat(params[10]);
+					boolean fisheye=params[11];
+    				float fisheyeTransVal=params[12];
+					Camera cam =new Camera(position,lookAt,upVec,distance,width,fisheye,fisheyeTransVal); //add direction
 					System.out.println(String.format("Parsed camera parameters (line %d)", lineNum));
 				}
 				else if (code.equals("set"))
-				{
-                                        // Add code here to parse general settings parameters
-
+				{ 	
+					
+					float[] backgroundCol = { Float.parseFloat(params[0]), Float.parseFloat(params[1]),Float.parseFloat(params[2]) };
+					int numRays=Integer.parseInt(params[3]);
+					int numRec=Integer.parseInt(params[4]);
+					GeneralSetting(backgroundCol ,numRays, numRec);
 					System.out.println(String.format("Parsed general settings (line %d)", lineNum));
 				}
 				else if (code.equals("mtl"))
 				{
-                                        // Add code here to parse material parameters
-
+					double[] diffuseColor = { Double.parseDouble(params[0]), Double.parseDouble(params[1]),Double.parseDouble(params[2]) };
+					double[] specularColor = { Double.parseDouble(params[3]), Double.parseDouble(params[4]),Double.parseDouble(params[5]) };
+					double[] reflectionColor = { Double.parseDouble(params[6]), Double.parseDouble(params[7]),Double.parseDouble(params[8]) };
+					float shininess=Float.parseFloat(params[9]);
+					float transparency=Float.parseFloat(params[10]);
+					Material material = new Material(diffuseColor,specularColor,reflectionColor,shininess,transparency);
+					//materials.add(material);
 					System.out.println(String.format("Parsed material (line %d)", lineNum));
 				}
 				else if (code.equals("sph"))
-				{
-                                        // Add code here to parse sphere parameters
-
-                                        // Example (you can implement this in many different ways!):
-					// Sphere sphere = new Sphere();
-                                        // sphere.setCenter(params[0], params[1], params[2]);
-                                        // sphere.setRadius(params[3]);
-                                        // sphere.setMaterial(params[4]);
-
+				{	Vector center=new Vector(params[0], params[1], params[2]);
+                    Sphere sphere = new Sphere(center,params[3],params[4]);
+					//surfaces.add(sphere);
 					System.out.println(String.format("Parsed sphere (line %d)", lineNum));
 				}
 				else if (code.equals("pln"))
 				{
-                                        // Add code here to parse plane parameters
-
+					Vector normal=new Vector(Double.parseDouble(params[0]), Double.parseDouble(params[1]),Double.parseDouble(params[2]));
+					double offset=Double.parseFloat(params[3]);
+					int index=Integer.parseInt(params[4]);
+					Plane plane = new Plane(Vector,offset,index);
+					//surfaces.add(plane);
 					System.out.println(String.format("Parsed plane (line %d)", lineNum));
 				}
 				else if (code.equals("lgt"))
 				{
-                                        // Add code here to parse light parameters
-
+					Vector lightPos=new Vector(Double.parseDouble(params[0]), Double.parseDouble(params[1]),Double.parseDouble(params[2]));
+					double[] color={ Double.parseDouble(params[3]), Double.parseDouble(params[4]),Double.parseDouble(params[5]) };
+					float specularIntensity=Float.parseFloat(params[6]);
+					float shadowIntensity=Float.parseFloat(params[7]);
+					float radius=Float.parseFloat(params[8]);
+					Light light = new Light(lightPos, color, specularIntensity, shadowIntensity, radius);
+					//lights.add(light);
 					System.out.println(String.format("Parsed light (line %d)", lineNum));
 				}
 				else
