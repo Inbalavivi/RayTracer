@@ -19,6 +19,9 @@ public class RayTracer {
 
 	public int imageWidth;
 	public int imageHeight;
+	Scene scene = null;
+	Camera cam = null;
+	GeneralSettings settings = null;
 	List<Surface> surfaces = new ArrayList<Surface>();
 	List<Material> materials = new ArrayList<Material>();
 	List<Light> lights = new ArrayList<Light>();
@@ -78,8 +81,6 @@ public class RayTracer {
 		int lineNum = 0;
 		System.out.println("Started parsing scene file " + sceneFileName);
 
-
-
 		while ((line = r.readLine()) != null)
 		{
 			line = line.trim();
@@ -104,7 +105,7 @@ public class RayTracer {
 					float width=Float.parseFloat(params[10]);
 					boolean fisheye=Boolean.parseBoolean(params[11]);
     				float fisheyeTransVal=Float.parseFloat(params[12]);
-					Camera cam =new Camera(position,lookAt,upVec,distance,width,fisheye,fisheyeTransVal); //add direction
+					cam =new Camera(position,lookAt,upVec,distance,width,fisheye,fisheyeTransVal); //add direction
 					System.out.println(String.format("Parsed camera parameters (line %d)", lineNum));
 				}
 				else if (code.equals("set"))
@@ -113,7 +114,7 @@ public class RayTracer {
 					float[] backgroundCol = { Float.parseFloat(params[0]), Float.parseFloat(params[1]),Float.parseFloat(params[2]) };
 					int numRays=Integer.parseInt(params[3]);
 					int numRec=Integer.parseInt(params[4]);
-					GeneralSettings settings = new GeneralSettings(backgroundCol ,numRays, numRec);
+					settings = new GeneralSettings(backgroundCol ,numRays, numRec);
 					System.out.println(String.format("Parsed general settings (line %d)", lineNum));
 				}
 				else if (code.equals("mtl"))
@@ -159,14 +160,13 @@ public class RayTracer {
 				}
 			}
 		}
-
-
-                // It is recommended that you check here that the scene is valid,
-                // for example camera settings and all necessary materials were defined.
-		
-
+		// It is recommended that you check here that the scene is valid,
+        // for example camera settings and all necessary materials were defined.
+		if ((cam == null) || (settings == null) || (surfaces.size() == 0) || (lights.size() == 0) || (materials.size() == 0)){
+			System.out.println("Scene is not valid");
+		}
+		scene = new Scene(cam, settings, surfaces, lights, materials);		
 		System.out.println("Finished parsing scene file " + sceneFileName);
-
 	}
 
 	/**

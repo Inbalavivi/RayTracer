@@ -41,11 +41,14 @@ public class Vector {
 		return vec;
 	}
 
-    // public Vector vecsMult(Vector otherVec) {
-       
-	// }
+    public Vector vecsMult(Vector otherVec) { // elementwize
+		double x= otherVec.x*this.x;
+        double y= otherVec.y*this.y;
+        double z= otherVec.z*this.z;
+		Vector vec = new Vector(x,y,z);
+		return vec;
+	}
     
-
 	public void normalize() {
 		double n = Math.sqrt(this.dotProduct(this));
 		this.x /= n;

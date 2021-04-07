@@ -12,7 +12,7 @@ public class Plane implements Surface {
         this.materialIndex=matindex;
     }
 	
-	public double planeIntersect(Ray ray)  {
+	public double intersect(Ray ray)  {
 		double t= (-1) * (ray.p0.dotProduct(this.normal)+ this.offset) / (ray.v.dotProduct(this.normal));
 		return t;
 	}

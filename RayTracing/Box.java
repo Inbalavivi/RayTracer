@@ -11,6 +11,9 @@ public class Box implements Surface {
         this.materialIndex=index;
     }
  
+	public double intersect(Ray ray)  {
+		return 0.5; /// temp!
+	}
 	// public double boxIntersect(Ray ray)  {
 	// 	double offset = (-1)*this.normal.dotProduct(this.vertex1);
 	// 	double t = findTIntersection(ray, this.normal,offset);

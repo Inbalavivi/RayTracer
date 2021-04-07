@@ -5,13 +5,14 @@ public class Sphere implements Surface{
 	double radius;
 	int materialIndex;
 
+
 	public Sphere(Vector center,double radiusVal,int material) {
         this.centerPos = center;
         this.radius=radiusVal;
         this.materialIndex=material;
     }
 	
-	public double sphereIntersect(Ray ray)  {
+	public double intersect(Ray ray)  {
 		Vector l= this.centerPos.add((ray.p0).scalarMult(-1));
 		double t_ca = l.dotProduct(ray.v);
 		if(t_ca <0) {
