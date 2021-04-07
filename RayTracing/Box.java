@@ -39,7 +39,7 @@ public class Box {
 	// 	return t;
 	// }
 
-	// private boolean checkInTriangle(vector vertex1, vector vertex2,vector point, vector normal) {
+	// private boolean checkInBox(vector vertex1, vector vertex2,vector point, vector normal) {
 	// 	vector V1 = vertex2.sub(vertex1);
 	// 	vector V2 = point.sub(vertex1);	
 	// 	vector V3 = V1.crossProduct(V2);
@@ -58,8 +58,5 @@ public class Box {
 	// 	return triNormal;
 	// }
 	
-	
-	// public int getMterialIndex() {
-	// 	return this.materialIndex;
-	// }
+
 }

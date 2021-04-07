@@ -11,7 +11,7 @@ public class Sphere{
         this.materialIndex=material;
     }
 	
-	public double sphere_intersect(Ray ray)  {
+	public double sphereIntersect(Ray ray)  {
 		Vector l= this.centerPos.add((ray.p0).scalarMult(-1));
 		double t_ca = l.dotProduct(ray.v);
 		if(t_ca <0) {
@@ -41,15 +41,10 @@ public class Sphere{
 	}
 
 
-
-	// @Override
 	// public vector findNormal(vector intersectionPoint) {
 	// 	vector normal = intersectionPoint.add(this.center.multByScalar(-1));
 	// 	normal.normalize();
 	// 	return normal;
 	// }
-	// @Override
-	// public int getMterialIndex() {
-	// 	return this.materialIndex;
-	// }
+
 }
