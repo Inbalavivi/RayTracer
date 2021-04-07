@@ -10,12 +10,10 @@ public class Plane {
         this.materialIndex=matindex;
     }
 	
-
-	// @Override
-	// public double intersecte(Ray ray)  {
-	// 	double t= (-1) * (ray.basePoint.dotProduct(this.normal)+ this.offset) / (ray.directionVector.dotProduct(this.normal));
-	// 	return t;
-	// }
+	public double plane_intersect(Ray ray)  {
+		double t= (-1) * (ray.p0.dotProduct(this.normal)+ this.offset) / (ray.directionVec.dotProduct(this.normal));
+		return t;
+	}
 
 	// @Override
 	// public vector findNormal(vector intersectionPoint) {
@@ -23,10 +21,7 @@ public class Plane {
 	// 	return this.normal;
 	// }
 
-	// @Override
-	// public int getMterialIndex() {
-	// 	return this.materialIndex;
-	// }
+
 	
 	// public double findOffset(vector point) {
 	// 	return (this.normal.dotProduct(point));

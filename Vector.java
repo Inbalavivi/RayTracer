@@ -33,7 +33,7 @@ public class Vector {
 	}
 	
 
-	public Vector multByScalar(double scalar) {
+	public Vector scalarMult(double scalar) {
         double x= scalar*this.x;
         double y= scalar*this.y;
         double z= scalar*this.z;
@@ -41,7 +41,7 @@ public class Vector {
 		return vec;
 	}
 
-    public Vector multVecs(Vector otherVec) {
+    public Vector vecsMult(Vector otherVec) {
        
 	}
     
