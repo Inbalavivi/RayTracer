@@ -1,6 +1,6 @@
 package RayTracing;
 
-public class Plane {
+public class Plane implements Surface {
     Vector normal;
 	double offset;
 	int materialIndex;

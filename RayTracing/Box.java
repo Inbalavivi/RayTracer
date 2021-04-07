@@ -1,6 +1,6 @@
 package RayTracing;
 
-public class Box {
+public class Box implements Surface {
     Vector centerPos;
     double edgeLen;
     int materialIndex;
