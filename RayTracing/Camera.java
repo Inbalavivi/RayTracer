@@ -7,12 +7,12 @@ public class Camera {
 	float screenDistance;
 	float screenWidth;
     boolean fisheye=false;
-    float fisheyeTransVal=0.5;
+    float fisheyeTransVal=(float)0.5;
     Vector direction;
 	
     //add direction
-	public Camera(Vector pos,Vector lookAt,Vector upVec,float distance,float width,boolean isfisheye, boolean fisheyeVal ) {
-        this.Position=pos;
+	public Camera(Vector pos,Vector lookAt,Vector upVec,float distance,float width,boolean isfisheye, float fisheyeVal ) {
+        this.position=pos;
         lookAt.normalize();
         this.lookAtPoint=lookAt;
         upVec.normalize();

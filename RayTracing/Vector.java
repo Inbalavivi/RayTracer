@@ -17,9 +17,9 @@ public class Vector {
 	}
 
 	public Vector crossProduct(Vector otherVec ) {
-		double x = (this.y * otherVec.z) - (this.z * b.y);
-		double y = (this.z * otherVec.x) - (this.x * b.z);
-		double z = (this.x * otherVec.y) - (this.y * b.x);
+		double x = (this.y * otherVec.z) - (this.z * otherVec.y);
+		double y = (this.z * otherVec.x) - (this.x * otherVec.z);
+		double z = (this.x * otherVec.y) - (this.y * otherVec.x);
 		Vector vec = new Vector(x,y,z);
 		return vec;
 	}
@@ -41,9 +41,9 @@ public class Vector {
 		return vec;
 	}
 
-    public Vector vecsMult(Vector otherVec) {
+    // public Vector vecsMult(Vector otherVec) {
        
-	}
+	// }
     
 
 	public void normalize() {

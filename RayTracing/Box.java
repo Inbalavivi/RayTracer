@@ -1,3 +1,5 @@
+package RayTracing;
+
 public class Box {
     Vector centerPos;
     double edgeLen;

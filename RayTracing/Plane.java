@@ -1,3 +1,5 @@
+package RayTracing;
+
 public class Plane {
     Vector normal;
 	double offset;
@@ -11,7 +13,7 @@ public class Plane {
     }
 	
 	public double plane_intersect(Ray ray)  {
-		double t= (-1) * (ray.p0.dotProduct(this.normal)+ this.offset) / (ray.directionVec.dotProduct(this.normal));
+		double t= (-1) * (ray.p0.dotProduct(this.normal)+ this.offset) / (ray.v.dotProduct(this.normal));
 		return t;
 	}
 

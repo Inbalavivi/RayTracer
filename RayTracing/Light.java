@@ -1,3 +1,5 @@
+package RayTracing;
+
 public class Light {
     Vector lightPos;
 	double[] color;

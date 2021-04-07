@@ -99,8 +99,8 @@ public class RayTracer {
 					Vector upVec = new Vector(Double.parseDouble(params[6]),Double.parseDouble(params[7]),Double.parseDouble(params[8]));
 					float distance=Float.parseFloat(params[9]);
 					float width=Float.parseFloat(params[10]);
-					boolean fisheye=params[11];
-    				float fisheyeTransVal=params[12];
+					boolean fisheye=Boolean.parseBoolean(params[11]);
+    				float fisheyeTransVal=Float.parseFloat(params[12]);
 					Camera cam =new Camera(position,lookAt,upVec,distance,width,fisheye,fisheyeTransVal); //add direction
 					System.out.println(String.format("Parsed camera parameters (line %d)", lineNum));
 				}
@@ -110,7 +110,7 @@ public class RayTracer {
 					float[] backgroundCol = { Float.parseFloat(params[0]), Float.parseFloat(params[1]),Float.parseFloat(params[2]) };
 					int numRays=Integer.parseInt(params[3]);
 					int numRec=Integer.parseInt(params[4]);
-					GeneralSetting(backgroundCol ,numRays, numRec);
+					GeneralSettings settings = new GeneralSettings(backgroundCol ,numRays, numRec);
 					System.out.println(String.format("Parsed general settings (line %d)", lineNum));
 				}
 				else if (code.equals("mtl"))
@@ -125,17 +125,17 @@ public class RayTracer {
 					System.out.println(String.format("Parsed material (line %d)", lineNum));
 				}
 				else if (code.equals("sph"))
-				{	Vector center=new Vector(params[0], params[1], params[2]);
-                    Sphere sphere = new Sphere(center,params[3],params[4]);
+				{	Vector center = new Vector(Double.parseDouble(params[0]), Double.parseDouble(params[1]),Double.parseDouble(params[2]));
+                    Sphere sphere = new Sphere(center, Double.parseDouble(params[3]),Integer.parseInt(params[4]));
 					//surfaces.add(sphere);
 					System.out.println(String.format("Parsed sphere (line %d)", lineNum));
 				}
 				else if (code.equals("pln"))
 				{
 					Vector normal=new Vector(Double.parseDouble(params[0]), Double.parseDouble(params[1]),Double.parseDouble(params[2]));
-					double offset=Double.parseFloat(params[3]);
+					double offset=Double.parseDouble(params[3]);
 					int index=Integer.parseInt(params[4]);
-					Plane plane = new Plane(Vector,offset,index);
+					Plane plane = new Plane(normal,offset,index);
 					//surfaces.add(plane);
 					System.out.println(String.format("Parsed plane (line %d)", lineNum));
 				}

@@ -1,11 +1,11 @@
 package RayTracing;
 
-public class GeneralSetting {
+public class GeneralSettings {
     float [] backgroundCol ;
 	int numShadowRays;
 	int maxNumRec;
 	
-    public GeneralSetting(float[] col ,int numRays, int numRec){
+    public GeneralSettings(float[] col ,int numRays, int numRec){
         this.backgroundCol=col;
         this.numShadowRays=numRays;
         this.maxNumRec=numRec;
