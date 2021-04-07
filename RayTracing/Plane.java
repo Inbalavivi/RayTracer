@@ -17,10 +17,15 @@ public class Plane implements Surface {
 		return t;
 	}
 
-	// public vector findNormal(vector intersectionPoint) {
-	// 	this.normal.normalize();
-	// 	return this.normal;
-	// }
+	public Vector getNormal(Vector intersectionPoint) {
+		this.normal.normalize();
+		return this.normal;
+	}
+
+	public int getMterialIndex() {
+		return this.materialIndex;
+	}
+	
 
 	// public double findOffset(vector point) {
 	// 	return (this.normal.dotProduct(point));

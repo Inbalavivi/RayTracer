@@ -42,10 +42,14 @@ public class Sphere implements Surface{
 	}
 
 
-	// public vector findNormal(vector intersectionPoint) {
-	// 	vector normal = intersectionPoint.add(this.center.multByScalar(-1));
-	// 	normal.normalize();
-	// 	return normal;
-	// }
+	public Vector getNormal(Vector intersectionPoint) {
+		Vector normal = intersectionPoint.add(this.centerPos.scalarMult(-1));
+		normal.normalize();
+		return normal;
+	}
+	
+	public int getMterialIndex() {
+		return this.materialIndex;
+	}
 
 }

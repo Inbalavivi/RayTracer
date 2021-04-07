@@ -119,9 +119,9 @@ public class RayTracer {
 				}
 				else if (code.equals("mtl"))
 				{
-					double[] diffuseColor = { Double.parseDouble(params[0]), Double.parseDouble(params[1]),Double.parseDouble(params[2]) };
-					double[] specularColor = { Double.parseDouble(params[3]), Double.parseDouble(params[4]),Double.parseDouble(params[5]) };
-					double[] reflectionColor = { Double.parseDouble(params[6]), Double.parseDouble(params[7]),Double.parseDouble(params[8]) };
+					Vector diffuseColor = new Vector(Double.parseDouble(params[0]), Double.parseDouble(params[1]),Double.parseDouble(params[2]) );
+					Vector specularColor = new Vector( Double.parseDouble(params[3]), Double.parseDouble(params[4]),Double.parseDouble(params[5]) );
+					Vector reflectionColor = new Vector( Double.parseDouble(params[6]), Double.parseDouble(params[7]),Double.parseDouble(params[8]) );
 					float shininess=Float.parseFloat(params[9]);
 					float transparency=Float.parseFloat(params[10]);
 					Material material = new Material(diffuseColor,specularColor,reflectionColor,shininess,transparency);
@@ -146,7 +146,7 @@ public class RayTracer {
 				else if (code.equals("lgt"))
 				{
 					Vector lightPos=new Vector(Double.parseDouble(params[0]), Double.parseDouble(params[1]),Double.parseDouble(params[2]));
-					double[] color={ Double.parseDouble(params[3]), Double.parseDouble(params[4]),Double.parseDouble(params[5]) };
+					Vector color=new Vector( Double.parseDouble(params[3]), Double.parseDouble(params[4]),Double.parseDouble(params[5]) );
 					float specularIntensity=Float.parseFloat(params[6]);
 					float shadowIntensity=Float.parseFloat(params[7]);
 					float radius=Float.parseFloat(params[8]);

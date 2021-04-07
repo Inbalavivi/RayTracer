@@ -17,72 +17,55 @@ public class Scene {
         this.materials = materials;
     }
 
-    private double[] colorRGB(Intersection hit, Ray ray, int recDepth) {
+	private Vector color(Intersection hit, Ray ray, int recDepth) {
 		if (recDepth == 0) {
-			double[] color = {settings.backgroundCol[0], settings.backgroundCol[1], settings.backgroundCol[2]};
+			Vector color = new Vector(settings.backgroundCol.x, settings.backgroundCol.y, settings.backgroundCol.z);
 			return color;
 		}
-		Vector intersectionPoint = ray.basePoint.add(ray.directionVector.multByScalar(hit.min_t));
-		Vector normel = hit.min_primitive.findNormal(intersectionPoint);
-		if (normel.dotProduct(ray.directionVector) > 0) {
-			normel = normel.multByScalar(-1);
+		Vector intersection = ray.p0.add(ray.v.scalarMult(hit.min_t));
+		Vector N = hit.firstSurface.getNormal(intersection);
+		if (N.dotProduct(ray.v) > 0) {
+			N = N.scalarMult(-1);
 		}
-		normel.normalize();
-		double[] col;
-		Material mat = materials.get(hit.min_primitive.getMterialIndex() - 1);
-
-		for (Light light : scene.lights) {
-			Vector L = light.lightPosition.sub(intersectionPoint);
-			double rTemp = 0;
-			double gTemp = 0;
-			double bTemp = 0;
+		N.normalize();
+		Material mat = materials.get(hit.firstSurface.getMterialIndex() - 1);
+		Vector col=null;
+		for (Light light : this.lights) {
+			Vector L = light.lightPos.add(intersection.scalarMult(-1));
 			L.normalize();
-			double cTeta = N.dotProduct(L);
-			if (cTeta < 0) {
+			double NdotL = N.dotProduct(L);
+			if (NdotL < 0) {
 				continue;
 			}
-			rTemp += mat.diffuseColor[0] * light.lightColor[0] * cTeta;
-			gTemp += mat.diffuseColor[1] * light.lightColor[1] * cTeta;
-			bTemp += mat.diffuseColor[2] * light.lightColor[2] * cTeta;
-			Vector R = N.multByScalar((L.multByScalar(2).dotProduct(N))).sub(L);
-			double sTeta = Math.pow(R.dotProduct(ray.directionVector.multByScalar(-1)),
-					mat.phongSpecularityCoefficient);
-			rTemp += mat.specularColor[0] * light.lightColor[0] * sTeta * (light.specularIntensity);
-			gTemp += mat.specularColor[1] * light.lightColor[1] * sTeta * (light.specularIntensity);
-			bTemp += mat.specularColor[2] * light.lightColor[2] * sTeta * (light.specularIntensity);
-
-			double SoftshadowIntensity = softShadow(light, L.multByScalar(-1), intersectionPoint);
-			col.r += rTemp * ((1 - light.shadowIntensity) + light.shadowIntensity * SoftshadowIntensity);
-			col.g += gTemp * ((1 - light.shadowIntensity) + light.shadowIntensity * SoftshadowIntensity);
-			col.b += bTemp * ((1 - light.shadowIntensity) + light.shadowIntensity * SoftshadowIntensity);
+			// ambient   diff      specular
+        	//Ka*Ia +  Ip*Kd*N⋅L + Ip*Ks*(R⋅V)^n
+			
+			Vector diffusion=(light.color.vecsMult(mat.diffuseCol)).scalarMult(NdotL);
+			Vector R = N.scalarMult((L.scalarMult(2).dotProduct(N))).add(L.scalarMult(-1));
+			double RdotV_n = Math.pow(R.dotProduct(ray.v.scalarMult(-1)),mat.shininess);
+			Vector specular=((light.color.vecsMult(mat.specularCol)).scalarMult(RdotV_n)).scalarMult(light.specularIntensity);
+			Vector vec=diffusion.add(specular);
+			
+			double SoftshadowIntensity = softShadow(light, L.scalarMult(-1), intersection);
+			Vector shadowIntensVec=new Vector(light.shadowIntensity,light.shadowIntensity,light.shadowIntensity);
+			Vector softShadowIntensVec=new Vector(SoftshadowIntensity,SoftshadowIntensity,SoftshadowIntensity);
+			col = ((vec.scalarMult(1 - light.shadowIntensity)).add(shadowIntensVec)).vecsMult(softShadowIntensVec);
+			
 		}
-		double[] transfCol;
+		Vector transfCol = null;
 		if (mat.transparency > 0) {
-			transfCol = culcTransColors(mat, normel, ray, intersectionPoint, recDepth);
+			transfCol = culcTransColors(mat, N, ray, intersection, recDepth);
 		}
 
-		Double[] reflectionColor = null;;
-		if (mat.reflectionColor[0] > 0 || mat.reflectionColor[1] > 0 || mat.reflectionColor[2] > 0) {
-			reflectionColor = ReflectionColor(ray, normel, intersectionPoint, mat, recDepth);
+		Vector reflectionColor = null;
+		if (mat.reflectionCol.x > 0 || mat.reflectionCol.y > 0 || mat.reflectionCol.z > 0) {
+			reflectionColor = culcRefColors(ray, N, intersection, mat, recDepth);
 		}
-        // ambient   diff      specular
-        //Ka*Ia +  Ip*Kd*N⋅L + Ip*Ks*(R⋅V)n
-
-        
         //output color = (background color) * transparency + (diffuse + specular) * (1 - transparency) + (reflection color)
-		color[0] =  transfCol.r * mat.transparency + (col.r * (1 - mat.transparency) + reflectionColor.r);
-		color[1] =  transfCol.g * mat.transparency + (col.g * (1 - mat.transparency) + reflectionColor.g);
-		color[2] =  transfCol.b * mat.transparency + (col.b * (1 - mat.transparency) + reflectionColor.b);
+		col=(transfCol.scalarMult(mat.transparency)).add((col.scalarMult(1 - mat.transparency))).add(reflectionColor);
 
-		if (col.r > 1) {
-			col.r = 1;
-		}
-		if (col.g > 1) {
-			col.g = 1;
-		}
-		if (col.b > 1) {
-			col.b = 1;
-		}
+		
+		col.checkRange();
 		return col;
 	}
 
@@ -93,62 +76,38 @@ public class Scene {
         return R;
     }
 
-	private double[] ReflectionColor(Ray ray, Vector normel, Vector Intersection, Material mat, int recDepth) {
+	private Vector ReflectionColor(Ray ray, Vector normel, Vector IntersectionP, Material mat, int recDepth) {
 		Vector color;
 		Vector R = reflectVector( ray, normel);
-		Ray reflectionRay = new Ray(Intersection.add(R.scalarMult(0.001)), R);
-        
-		Intersection hit = Intersection.FindIntersction(reflectionRay, primitives);
-
+		Ray reflectionRay = new Ray(IntersectionP.add(R.scalarMult(0.001)), R);
+		Intersection hit = Intersection.FindIntersction(reflectionRay, this.surfaces);
 		if (hit.min_t == Double.MAX_VALUE) {
-
-			col.r = (set.backgroundColor[0] * mat.reflectionColor[0]);
-			col.g = (set.backgroundColor[1] * mat.reflectionColor[1]);
-			col.b = (set.backgroundColor[2] * mat.reflectionColor[2]);
+			color=this.settings.backgroundCol.vecsMult(mat.reflectionCol);
+		
 		} else {
-			Color tempCol = color(hit, refRay, recDepth - 1);
-			col.r = (tempCol.r * mat.reflectionColor[0]);
-			col.g = (tempCol.g * mat.reflectionColor[1]);
-			col.b = (tempCol.b * mat.reflectionColor[2]);
+			Vector tempCol = color(hit, reflectionRay, recDepth - 1);
+			color=tempCol.vecsMult(mat.reflectionCol);
+			
 		}
-		if (col.r > 1) {
-			col.r = 1;
-		}
-		if (col.g > 1) {
-			col.g = 1;
-		}
-		if (col.b > 1) {
-			col.b = 1;
-		}
-		return col;
+		color.checkRange();
+		return color;
 	}
 
-	// public Color culcTransColors(Material mat, vector N, Ray ray, vector intersectionPoint, int recDepth) {
-	// 	Color col = new Color();
-	// 	Ray transRay = new Ray(intersectionPoint.add(ray.directionVector.multByScalar(0.001)), ray.directionVector);
-	// 	Intersection transHit = Intersection.FindIntersction(transRay, UpdatedPrimitives);
-	// 	UpdatedPrimitives.remove(transHit.min_primitive);
-	// 	if (transHit.min_t != Double.MAX_VALUE) {
-	// 		Color tempCol = color(transHit, transRay, recDepth - 1);
-	// 		col.r = tempCol.r;
-	// 		col.g = tempCol.g;
-	// 		col.b = tempCol.b;
-	// 	} else {
-	// 		col.r = set.backgroundColor[0];
-	// 		col.g = set.backgroundColor[1];
-	// 		col.b = set.backgroundColor[2];
-	// 	}
-	// 	if (col.r > 1) {
-	// 		col.r = 1;
-	// 	}
-	// 	if (col.g > 1) {
-	// 		col.g = 1;
-	// 	}
-	// 	if (col.b > 1) {
-	// 		col.b = 1;
-	// 	}
-	// 	return col;
-	// }
+	public Vector culcTransColors(Material mat, Vector N, Ray ray, Vector intersectionPoint, int recDepth) {
+		Vector col=null;
+		Ray transRay = new Ray(intersectionPoint.add(ray.v.scalarMult(0.001)), ray.v);
+		Intersection transHit = Intersection.FindIntersction(transRay, UpdatedPrimitives);
+		UpdatedPrimitives.remove(transHit.firstSurface);
+		if (transHit.min_t != Double.MAX_VALUE) {
+			Vector tempCol = color(transHit, transRay, recDepth - 1);
+			col =tempCol;
+		
+		} else {
+			col =this.settings.backgroundCol;
+		}
+		col.checkRange();
+		return col;
+	}
 
 }
 	

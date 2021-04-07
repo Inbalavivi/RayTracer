@@ -3,39 +3,39 @@ package RayTracing;
 import java.util.List;
 
 public class Intersection {
-	// double min_t;
-	// Primitive min_primitive;
+	double min_t;
+	Surface firstSurface;
 
-	// public Intersection(double min_t, Primitive min_primitive) {
-	// 	this.min_primitive = min_primitive;
-	// 	this.min_t = min_t;
-	// }
+	public Intersection(double min_t, Surface firstSurface) {
+		this.firstSurface = firstSurface;
+		this.min_t = min_t;
+	}
 
-	// public static Intersection FindIntersction(Ray ray, List<Primitive> Primitives) {
-	// 	double t;
-	// 	double min_t = Double.MAX_VALUE;
-	// 	Primitive min_primitive = null;
-	// 	for (Primitive primitive : Primitives) {
-	// 		t = primitive.intersecte(ray);
-	// 		if (t < min_t && t > 0) {
-	// 			min_primitive = primitive;
-	// 			min_t = t;
-	// 		}
+	public static Intersection FindIntersction(Ray ray, List<Surface> Surfaces) {
+		double t;
+		double min_t = Double.MAX_VALUE;
+		Surface firstSurface = null;
+		for (Surface s : Surfaces) {
+			t = s.intersect(ray);
+			if (t < min_t && t > 0) {
+				firstSurface = s;
+				min_t = t;
+			}
 
-	// 	}
-	// 	Intersection intersection = new Intersection(min_t, min_primitive);
-	// 	return intersection;
-	// }
+		}
+		Intersection intersection = new Intersection(min_t, firstSurface);
+		return intersection;
+	}
 
-	// public static boolean isIntersect(Ray ray, Scene scene, double disToBeat) {
-	// 	double t;
-	// 	for (Primitive primitive : scene.Primitives) {
-	// 		t = primitive.intersecte(ray);
-	// 		if (t < disToBeat && t > 0) {
-	// 			return true;
-	// 		}
-	// 	}
-	// 	return false;
-	// }
+	public static boolean isIntersect(Ray ray, Scene scene, double disToBeat) {
+		double t;
+		for (Surface s : scene.surfaces) {
+			t = s.intersect(ray);
+			if (t < disToBeat && t > 0) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

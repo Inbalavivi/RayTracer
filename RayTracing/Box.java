@@ -53,13 +53,14 @@ public class Box implements Surface {
 	// }
 
 	
-	// public vector findNormal(vector intersectionPoint) {
-	// 	vector V1 = vertex2.sub(vertex1);
-	// 	vector V2 = vertex3.sub(vertex1);
-	// 	vector triNormal = V1.crossProduct(V2);
-	// 	//triNormal.normalize();
-	// 	return triNormal;
-	// }
+	public Vector getNormal(Vector intersectionPoint) {
+		Vector vec=null;
+		return vec;
+	}
+	public int getMterialIndex(){
+		return this.materialIndex;
+	}
+	
 	
 
 }

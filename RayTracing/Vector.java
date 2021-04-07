@@ -56,4 +56,16 @@ public class Vector {
 		this.z /= n;
 	}
 
+	public void checkRange(){
+		if (this.x > 1) {
+			this.x = 1;
+		}
+		if (this.y > 1) {
+			this.y = 1;
+		}
+		if (this.z > 1) {
+			this.z = 1;
+		}
+	}
+
 }

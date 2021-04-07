@@ -1,13 +1,13 @@
 package RayTracing;
 
 public class Material {
-    double[] diffuseCol;
-	double[] specularCol;
-	double[] reflectionCol;
+    Vector diffuseCol;
+	Vector specularCol;
+	Vector reflectionCol;
 	float shininess;
 	float transparency;
 
-	public Material (double[] diffuseColor,double[] specularColor,double[] reflectionColor, float shine, float transparent) {
+	public Material (Vector diffuseColor,Vector specularColor,Vector reflectionColor, float shine, float transparent) {
         this.diffuseCol=diffuseColor;
         this.specularCol=specularColor;
         this.reflectionCol=reflectionColor;
