@@ -28,7 +28,7 @@ public class Scene {
 			normel = normel.multByScalar(-1);
 		}
 		normel.normalize();
-		double[] color;
+		double[] col;
 		Material mat = materials.get(hit.min_primitive.getMterialIndex() - 1);
 
 		for (Light light : scene.lights) {
@@ -67,6 +67,8 @@ public class Scene {
 		}
         // ambient   diff      specular
         //Ka*Ia +  Ip*Kd*N⋅L + Ip*Ks*(R⋅V)n
+
+        
         //output color = (background color) * transparency + (diffuse + specular) * (1 - transparency) + (reflection color)
 		color[0] =  transfCol.r * mat.transparency + (col.r * (1 - mat.transparency) + reflectionColor.r);
 		color[1] =  transfCol.g * mat.transparency + (col.g * (1 - mat.transparency) + reflectionColor.g);
