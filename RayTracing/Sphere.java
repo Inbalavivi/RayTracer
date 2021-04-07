@@ -1,6 +1,6 @@
 package RayTracing;
 
-public class Sphere{
+public class Sphere implements Surface{
 	Vector centerPos;
 	double radius;
 	int materialIndex;

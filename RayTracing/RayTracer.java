@@ -19,6 +19,9 @@ public class RayTracer {
 
 	public int imageWidth;
 	public int imageHeight;
+	List<Surface> surfaces = new ArrayList<Surface>();
+	List<Material> materials = new ArrayList<Material>();
+	List<Light> lights = new ArrayList<Light>();
 
 	/**
 	 * Runs the ray tracer. Takes scene file, output image file and image size as input.
@@ -121,13 +124,13 @@ public class RayTracer {
 					float shininess=Float.parseFloat(params[9]);
 					float transparency=Float.parseFloat(params[10]);
 					Material material = new Material(diffuseColor,specularColor,reflectionColor,shininess,transparency);
-					//materials.add(material);
+					materials.add(material);
 					System.out.println(String.format("Parsed material (line %d)", lineNum));
 				}
 				else if (code.equals("sph"))
 				{	Vector center = new Vector(Double.parseDouble(params[0]), Double.parseDouble(params[1]),Double.parseDouble(params[2]));
                     Sphere sphere = new Sphere(center, Double.parseDouble(params[3]),Integer.parseInt(params[4]));
-					//surfaces.add(sphere);
+					surfaces.add(sphere);
 					System.out.println(String.format("Parsed sphere (line %d)", lineNum));
 				}
 				else if (code.equals("pln"))
@@ -136,7 +139,7 @@ public class RayTracer {
 					double offset=Double.parseDouble(params[3]);
 					int index=Integer.parseInt(params[4]);
 					Plane plane = new Plane(normal,offset,index);
-					//surfaces.add(plane);
+					surfaces.add(plane);
 					System.out.println(String.format("Parsed plane (line %d)", lineNum));
 				}
 				else if (code.equals("lgt"))
@@ -147,7 +150,7 @@ public class RayTracer {
 					float shadowIntensity=Float.parseFloat(params[7]);
 					float radius=Float.parseFloat(params[8]);
 					Light light = new Light(lightPos, color, specularIntensity, shadowIntensity, radius);
-					//lights.add(light);
+					lights.add(light);
 					System.out.println(String.format("Parsed light (line %d)", lineNum));
 				}
 				else
@@ -157,8 +160,10 @@ public class RayTracer {
 			}
 		}
 
+
                 // It is recommended that you check here that the scene is valid,
                 // for example camera settings and all necessary materials were defined.
+		
 
 		System.out.println("Finished parsing scene file " + sceneFileName);
 
