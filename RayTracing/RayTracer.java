@@ -111,7 +111,7 @@ public class RayTracer {
 				else if (code.equals("set"))
 				{ 	
 					
-					float[] backgroundCol = { Float.parseFloat(params[0]), Float.parseFloat(params[1]),Float.parseFloat(params[2]) };
+					Vector backgroundCol = new Vector (Double.parseDouble(params[0]), Double.parseDouble(params[1]),Double.parseDouble(params[2]));
 					int numRays=Integer.parseInt(params[3]);
 					int numRec=Integer.parseInt(params[4]);
 					settings = new GeneralSettings(backgroundCol ,numRays, numRec);

@@ -40,10 +40,10 @@ public class Scene {
 			// ambient   diff      specular
         	//Ka*Ia +  Ip*Kd*N⋅L + Ip*Ks*(R⋅V)^n
 			
-			Vector diffusion=(light.color.vecsMult(mat.diffuseCol)).scalarMult(NdotL);
-			Vector R = N.scalarMult((L.scalarMult(2).dotProduct(N))).add(L.scalarMult(-1));
-			double RdotV_n = Math.pow(R.dotProduct(ray.v.scalarMult(-1)),mat.shininess);
-			Vector specular=((light.color.vecsMult(mat.specularCol)).scalarMult(RdotV_n)).scalarMult(light.specularIntensity);
+			Vector diffusion=(light.color.vecsMult(mat.diffuseCol)).scalarMult(NdotL);           /// formula diffusion
+			Vector R = N.scalarMult((L.scalarMult(2).dotProduct(N))).add(L.scalarMult(-1));      /// formula
+			double RdotV_n = Math.pow(R.dotProduct(ray.v.scalarMult(-1)),mat.shininess);         /// formula
+			Vector specular=((light.color.vecsMult(mat.specularCol)).scalarMult(RdotV_n)).scalarMult(light.specularIntensity);   /// formula
 			Vector vec=diffusion.add(specular);
 			
 			double SoftshadowIntensity = softShadow(light, L.scalarMult(-1), intersection);
@@ -59,10 +59,10 @@ public class Scene {
 
 		Vector reflectionColor = null;
 		if (mat.reflectionCol.x > 0 || mat.reflectionCol.y > 0 || mat.reflectionCol.z > 0) {
-			reflectionColor = culcRefColors(ray, N, intersection, mat, recDepth);
+			reflectionColor = ReflectionColor(ray, N, intersection, mat, recDepth);
 		}
         //output color = (background color) * transparency + (diffuse + specular) * (1 - transparency) + (reflection color)
-		col=(transfCol.scalarMult(mat.transparency)).add((col.scalarMult(1 - mat.transparency))).add(reflectionColor);
+		col=(transfCol.scalarMult(mat.transparency)).add((col.scalarMult(1 - mat.transparency))).add(reflectionColor);   /// formula
 
 		
 		col.checkRange();
@@ -71,7 +71,7 @@ public class Scene {
 
 
     private Vector reflectVector(Ray ray, Vector normel ){
-		Vector R = ray.v.add(normel.scalarMult(-2 * normel.dotProduct(ray.v)));
+		Vector R = ray.v.add(normel.scalarMult(-2 * normel.dotProduct(ray.v)));   /// formula
         R.normalize();
         return R;
     }
