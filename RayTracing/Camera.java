@@ -8,11 +8,12 @@ public class Camera {
 	float screenWidth;
     boolean fisheye=false;
     float fisheyeTransVal=(float)0.5;
-    Vector direction;
+    //Vector direction;
 	
     //add direction
 	public Camera(Vector pos,Vector lookAt,Vector upVec,float distance,float width,boolean isfisheye, float fisheyeVal ) {
         this.position=pos;
+        lookAt.add(position.scalarMult(-1));
         lookAt.normalize();
         this.lookAtPoint=lookAt;
         upVec.normalize();

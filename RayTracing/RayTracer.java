@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -20,7 +21,7 @@ public class RayTracer {
 	public int imageWidth;
 	public int imageHeight;
 	Scene scene = null;
-	Camera cam = null;
+	Camera camera = null;
 	GeneralSettings settings = null;
 	List<Surface> surfaces = new ArrayList<Surface>();
 	List<Material> materials = new ArrayList<Material>();
@@ -105,7 +106,7 @@ public class RayTracer {
 					float width=Float.parseFloat(params[10]);
 					boolean fisheye=Boolean.parseBoolean(params[11]);
     				float fisheyeTransVal=Float.parseFloat(params[12]);
-					cam =new Camera(position,lookAt,upVec,distance,width,fisheye,fisheyeTransVal); //add direction
+					camera =new Camera(position,lookAt,upVec,distance,width,fisheye,fisheyeTransVal); //add direction
 					System.out.println(String.format("Parsed camera parameters (line %d)", lineNum));
 				}
 				else if (code.equals("set"))
@@ -162,10 +163,10 @@ public class RayTracer {
 		}
 		// It is recommended that you check here that the scene is valid,
         // for example camera settings and all necessary materials were defined.
-		if ((cam == null) || (settings == null) || (surfaces.size() == 0) || (lights.size() == 0) || (materials.size() == 0)){
+		if ((camera == null) || (settings == null) || (surfaces.size() == 0) || (lights.size() == 0) || (materials.size() == 0)){
 			System.out.println("Scene is not valid");
 		}
-		scene = new Scene(cam, settings, surfaces, lights, materials);		
+		scene = new Scene(camera, settings, surfaces, lights, materials);		
 		System.out.println("Finished parsing scene file " + sceneFileName);
 	}
 
@@ -179,16 +180,72 @@ public class RayTracer {
 		// Create a byte array to hold the pixel data:
 		byte[] rgbData = new byte[this.imageWidth * this.imageHeight * 3];
 
+		int ssl = settings.SuperSamplingLevel;
+		int ssHeight = imageHeight * ssl;
+		int ssWidth = imageWidth * ssl;
 
-                // Put your ray tracing code here!
-                //
-                // Write pixel color values in RGB format to rgbData:
-                // Pixel [x, y] red component is in rgbData[(y * this.imageWidth + x) * 3]
-                //            green component is in rgbData[(y * this.imageWidth + x) * 3 + 1]
-                //             blue component is in rgbData[(y * this.imageWidth + x) * 3 + 2]
-                //
-                // Each of the red, green and blue components should be a byte, i.e. 0-255
+		//// compute New Coordinate:
+		Vector VecX = camera.lookAtPoint.crossProduct(camera.upVector);
+		VecX.normalize();
+		camera.upVector = VecX.crossProduct(camera.lookAtPoint);
+		camera.upVector.normalize();
+		Vector V_x = new Vector(VecX.x, VecX.y, VecX.z);
+		V_x.normalize();
+		Vector V_y = new Vector(camera.upVector.x, camera.upVector.y, camera.upVector.z);
+		V_y.normalize();
+		Vector V_z = new Vector(camera.lookAtPoint.x, camera.lookAtPoint.y, camera.lookAtPoint.z);
+		V_z.normalize();
 
+		Vector P = (V_z.scalarMult(camera.screenDistance)).add(camera.position);
+		double camScreenHeight = (imageHeight * camera.screenWidth) / imageWidth;
+		Vector P0 = ((V_y.scalarMult(-1 * camScreenHeight / 2)).add(V_x.scalarMult(-1 * camera.screenWidth / 2))).add(P);
+
+		double pixelWidth = (camera.screenWidth / ssWidth);
+		double pixelHeight = (camScreenHeight / ssHeight);
+
+		for (int y = 0; y < imageHeight; y++) {
+			P = P0;
+			for (int x = 0; x < imageWidth; x++) {
+				Vector finalcolor = new Vector(0.0, 0.0, 0.0); /// color
+				Vector ssP = P;
+				for (int sRaw = 0; sRaw < ssl; sRaw++) {
+					for (int sCol = 0; sCol < ssl; sCol++) {
+						double heightOffset = ((ssl > 1) ? ((new Random().nextDouble() + sRaw) * (pixelWidth)) : 0);
+						double widthOffset = ((ssl > 1) ? ((new Random().nextDouble() + sCol) * (pixelHeight)) : 0);
+						ssP = (P.add(V_y.scalarMult(heightOffset))).add(V_x.scalarMult(widthOffset));
+						Ray ray = new Ray(camera.position, ssP.add(camera.position.scalarMult(-1)));
+						ray.direction.normalize();
+						Intersection hit = Intersection.FindIntersction(ray, surfaces);
+						if (hit.min_t != Double.MAX_VALUE) {
+							List<Surface> newSurfaces = new ArrayList<Surface>(surfaces);
+							newSurfaces.remove(hit.firstSurface);
+							Vector color = scene.color(hit, ray, settings.maxNumRec);
+							finalcolor.x += color.x;
+							finalcolor.y += color.y;
+							finalcolor.z += color.z;
+
+						} else { //(hit.min_t == Double.MAX_VALUE)
+							finalcolor.x += settings.backgroundCol.x;
+							finalcolor.y += settings.backgroundCol.y;
+							finalcolor.z += settings.backgroundCol.z;
+						}
+					}
+				}
+				// Write pixel color values in RGB format to rgbData:
+				// Pixel [x, y] red component is in rgbData[(y * this.imageWidth + x) * 3]
+				// green component is in rgbData[(y * this.imageWidth + x) * 3 + 1]
+				// blue component is in rgbData[(y * this.imageWidth + x) * 3 + 2]
+				//
+				// Each of the red, green and blue components should be a byte, i.e. 0-255
+
+				rgbData[(this.imageWidth * (this.imageHeight - y - 1) + imageWidth - x - 1) * 3]     = (byte)(finalcolor.x * 255 / (ssl * ssl));
+				rgbData[(this.imageWidth * (this.imageHeight - y - 1) + imageWidth - x - 1) * 3 + 1] = (byte)(finalcolor.y * 255 / (ssl * ssl));
+				rgbData[(this.imageWidth * (this.imageHeight - y - 1) + imageWidth - x - 1) * 3 + 2] = (byte)(finalcolor.z * 255 / (ssl * ssl));
+
+				P = P.add(V_x.scalarMult(camera.screenWidth / imageWidth));
+			}
+			P0 = P0.add(V_y.scalarMult(camScreenHeight / imageHeight));
+		}
 
 		long endTime = System.currentTimeMillis();
 		Long renderTime = endTime - startTime;
