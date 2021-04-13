@@ -27,15 +27,15 @@ public class Intersection {
 		return intersection;
 	}
 
-	public static boolean isIntersect(Ray ray, Scene scene, double disToBeat) {
+	public static int isIntersect(Ray ray, Scene scene, double disToBeat) {
 		double t;
 		for (Surface s : scene.surfaces) {
 			t = s.intersect(ray);
 			if (t < disToBeat && t > 0) {
-				return true;
+				return 1;
 			}
 		}
-		return false;
+		return 0;
 	}
 
 }

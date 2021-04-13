@@ -6,6 +6,7 @@ public class Light {
 	float specularIntensity;
 	float shadowIntensity;
 	float radius;
+	Vector corner;
 	
 	public Light(Vector pos, Vector col, float specularIntens, float shadowIntens, float radiusVal) {
 		this.lightPos=pos;
@@ -13,6 +14,10 @@ public class Light {
 		this.specularIntensity=specularIntens;
 		this.shadowIntensity=shadowIntens;
 		this.radius=radiusVal;
+	}
+
+	public void setCorner(Vector corner){
+		this.corner=corner;
 	}
  
 }

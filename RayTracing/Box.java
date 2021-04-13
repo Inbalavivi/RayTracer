@@ -57,7 +57,7 @@ public class Box implements Surface {
 		Vector vec=null;
 		return vec;
 	}
-	public int getMaterialIndex(){
+	public int  getMaterialIndex(){
 		return this.materialIndex;
 	}
 	
