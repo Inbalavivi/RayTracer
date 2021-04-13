@@ -37,14 +37,12 @@ public class Scene {
 			if (NdotL < 0) {
 				continue;
 			}
-			// ambient   diff      specular
-        	//Ka*Ia +  Ip*Kd*N⋅L + Ip*Ks*(R⋅V)^n
-			
-			Vector diffusion=(light.color.vecsMult(mat.diffuseCol)).scalarMult(NdotL);           /// formula diffusion
-			Vector R = N.scalarMult((L.scalarMult(2).dotProduct(N))).add(L.scalarMult(-1));      /// formula
-			double RdotV_n = Math.pow(R.dotProduct(ray.v.scalarMult(-1)),mat.shininess);         /// formula
-			Vector specular=((light.color.vecsMult(mat.specularCol)).scalarMult(RdotV_n)).scalarMult(light.specularIntensity);   /// formula
-			Vector vec=diffusion.add(specular);
+	
+			Vector diffusion=(light.color.vecsMult(mat.diffuseCol)).scalarMult(NdotL);           /// formula diffusion: Ip*Kd*N⋅L
+			Vector R = N.scalarMult((L.scalarMult(2).dotProduct(N))).add(L.scalarMult(-1));      /// formula for R : (2*L⋅N)N-L
+			double RdotV_n = Math.pow(R.dotProduct(ray.v.scalarMult(-1)),mat.shininess);         
+			Vector specular=((light.color.vecsMult(mat.specularCol)).scalarMult(RdotV_n)).scalarMult(light.specularIntensity);   /// formula specular: Ip*Ks*(R⋅V)^n
+			Vector vec=diffusion.add(specular); //diff+specular
 			
 			double SoftshadowIntensity = softShadow(light, L.scalarMult(-1), intersection);
 			Vector shadowIntensVec=new Vector(light.shadowIntensity,light.shadowIntensity,light.shadowIntensity);
