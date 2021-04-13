@@ -14,7 +14,7 @@ public class Box implements Surface {
 	public double intersect(Ray ray)  {
 		return 0.5; /// temp!
 	}
-	// public double boxIntersect(Ray ray)  {
+	// public double intersect(Ray ray)  {
 	// 	double offset = (-1)*this.normal.dotProduct(this.vertex1);
 	// 	double t = findTIntersection(ray, this.normal,offset);
 	// 	if (t<=0) {
@@ -30,7 +30,7 @@ public class Box implements Surface {
 	// 	return -1 ;
 	// }
 	
-	// private double findTIntersection(Ray ray, vector normal,double offset) {
+	// private double getTIntersection(Ray ray, vector normal,double offset) {
 	// 	double d = offset;
 	// 	double VN=ray.directionVector.dotProduct(normal);
 	// 	double P0N=ray.basePoint.dotProduct(normal);
@@ -42,7 +42,7 @@ public class Box implements Surface {
 	// 	return t;
 	// }
 
-	// private boolean checkInBox(vector vertex1, vector vertex2,vector point, vector normal) {
+	// private boolean isInBox(vector vertex1, vector vertex2,vector point, vector normal) {
 	// 	vector V1 = vertex2.sub(vertex1);
 	// 	vector V2 = point.sub(vertex1);	
 	// 	vector V3 = V1.crossProduct(V2);
