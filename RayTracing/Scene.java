@@ -74,7 +74,7 @@ public class Scene {
 
 	private double softShadow(Light light, Vector planeNormal, Vector intersectionPoint) {
 		Plane plane = new Plane(planeNormal,planeNormal.dotProduct(light.lightPos),-1);
-		Vector v_vec = plane.findVecOnPlane(light.lightPos);
+		Vector v_vec = plane.findVec(light.lightPos);
 		Vector u_vec = planeNormal.crossProduct(v_vec);
 		v_vec.normalize();
 		u_vec.normalize();

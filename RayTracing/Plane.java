@@ -12,6 +12,7 @@ public class Plane implements Surface {
         this.materialIndex=matindex - 1;
     }
 	
+	
 	public double intersect(Ray ray)  {
 		double t= (-1) * (ray.p0.dotProduct(this.normal)+ this.offset) / (ray.v.dotProduct(this.normal));
 		return t;
@@ -26,11 +27,10 @@ public class Plane implements Surface {
 		return this.materialIndex;
 	}
 	
-	public Vector findVecOnPlane(Vector point) {
+	public Vector findVec(Vector point) {
 		double z = -1* (this.normal.x*1+this.normal.y*1+this.offset)/this.normal.z;
-		double[] z_val = {1,1,z};
-		Vector z_vec = new Vector(z_val);
-		Vector newVector = z_vec.add(point.multByScalar(-1));
+		Vector z_vec = new Vector(1,1,z);
+		Vector newVector = z_vec.add(point.scalarMult(-1));
 		return newVector;
 	}
 
