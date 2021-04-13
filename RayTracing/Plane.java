@@ -9,7 +9,7 @@ public class Plane implements Surface {
         normal.normalize();
         this.normal=normal;
         this.offset=offset;
-        this.materialIndex=matindex;
+        this.materialIndex=matindex - 1;
     }
 	
 	public double intersect(Ray ray)  {
@@ -22,7 +22,7 @@ public class Plane implements Surface {
 		return this.normal;
 	}
 
-	public int getMterialIndex() {
+	public int getMaterialIndex() {
 		return this.materialIndex;
 	}
 	

@@ -9,7 +9,7 @@ public class Sphere implements Surface{
 	public Sphere(Vector center,double radiusVal,int material) {
         this.centerPos = center;
         this.radius=radiusVal;
-        this.materialIndex=material;
+        this.materialIndex=material - 1;
     }
 	
 	public double intersect(Ray ray)  {
@@ -42,13 +42,13 @@ public class Sphere implements Surface{
 	}
 
 
-	public Vector getNormal(Vector intersectionPoint) {
-		Vector normal = intersectionPoint.add(this.centerPos.scalarMult(-1));
+	public Vector getNormal(Vector intersection) {
+		Vector normal = intersection.add(this.centerPos.scalarMult(-1)); /// N = P0-P (P=looAt)
 		normal.normalize();
 		return normal;
 	}
 	
-	public int getMterialIndex() {
+	public int getMaterialIndex() {
 		return this.materialIndex;
 	}
 

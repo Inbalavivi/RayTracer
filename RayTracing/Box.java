@@ -5,10 +5,10 @@ public class Box implements Surface {
     double edgeLen;
     int materialIndex;
 
-    public Box(Vector center, double len, int index){
+    public Box(Vector center, double len, int metIndex){
         this.centerPos=center;
         this.edgeLen=len;
-        this.materialIndex=index;
+        this.materialIndex=metIndex - 1;
     }
  
 	public double intersect(Ray ray)  {
@@ -57,7 +57,7 @@ public class Box implements Surface {
 		Vector vec=null;
 		return vec;
 	}
-	public int getMterialIndex(){
+	public int getMaterialIndex(){
 		return this.materialIndex;
 	}
 	
