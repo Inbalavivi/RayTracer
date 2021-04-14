@@ -106,7 +106,7 @@ public class RayTracer {
 					float width=Float.parseFloat(params[10]);
 					boolean fisheye=Boolean.parseBoolean(params[11]);
     				float fisheyeTransVal=Float.parseFloat(params[12]);
-					camera =new Camera(position,lookAt,upVec,distance,width,fisheye,fisheyeTransVal); //add direction
+					camera =new Camera(position,lookAt,upVec,distance,width,fisheye,fisheyeTransVal);
 					System.out.println(String.format("Parsed camera parameters (line %d)", lineNum));
 				}
 				else if (code.equals("set"))
@@ -180,7 +180,7 @@ public class RayTracer {
 		// Create a byte array to hold the pixel data:
 		byte[] rgbData = new byte[this.imageWidth * this.imageHeight * 3];
 
-		int ssl = settings.SuperSamplingLevel;
+		int ssl = 1;
 		int ssHeight = imageHeight * ssl;
 		int ssWidth = imageWidth * ssl;
 
@@ -214,8 +214,8 @@ public class RayTracer {
 						double widthOffset = ((ssl > 1) ? ((new Random().nextDouble() + sCol) * (pixelHeight)) : 0);
 						ssP = (P.add(V_y.scalarMult(heightOffset))).add(V_x.scalarMult(widthOffset));
 						Ray ray = new Ray(camera.position, ssP.add(camera.position.scalarMult(-1)));
-						ray.direction.normalize();
-						Intersection hit = Intersection.FindIntersction(ray, surfaces);
+						ray.v.normalize();
+						Intersection hit = Intersection.getIntersction(ray, surfaces);
 						if (hit.min_t != Double.MAX_VALUE) {
 							List<Surface> newSurfaces = new ArrayList<Surface>(surfaces);
 							newSurfaces.remove(hit.firstSurface);
