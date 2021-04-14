@@ -1,6 +1,7 @@
 package RayTracing;
 
 import java.util.List;
+import java.util.Random;
 
 public class Scene {
 	Camera cam;
@@ -17,7 +18,7 @@ public class Scene {
         this.materials = materials;
     }
 
-	private Vector color(Intersection hit, Ray ray, int recDepth) {
+	public Vector color(Intersection hit, Ray ray, int recDepth) {
 		if (recDepth == 0) {
 			Vector color = new Vector(settings.backgroundCol.x, settings.backgroundCol.y, settings.backgroundCol.z);
 			return color;
@@ -56,7 +57,7 @@ public class Scene {
 		}
 		Vector transfCol = null;
 		if (mat.transparency > 0) {
-			transfCol = culcTransColors(mat, N, ray, intersection, recDepth);
+			transfCol = TransparencyColors(mat, N, ray, intersection, recDepth);
 		}
 
 		Vector reflectionColor = null;
@@ -70,44 +71,18 @@ public class Scene {
 		col.checkRange();
 		return col;
 	}
-
-	private double softShadow(Light light, Vector planeNormal, Vector intersectionPoint) {
-		Plane plane = new Plane(planeNormal,plane.findOffset(light.lightPos), );
-	
-		Vector v_vec = plane.findVecOnPlane(light.lightPos);
-		Vector u_vec = planeNormal.crossProduct(v_vec);
-		v_vec.normalize();
-		u_vec.normalize();
-
-		Vector corner = (light.lightPosition.add(v_vec.multByScalar(-0.5 * light.lightRadius)))
-				.add(u_vec.multByScalar(-0.5 * light.lightRadius));
-		Vector full_v = (corner.add(v_vec.multByScalar(light.lightRadius))).sub(corner);
-		Vector full_u = (corner.add(u_vec.multByScalar(light.lightRadius))).sub(corner);
-		double scalar = 1.0 / this.settings.NumberOfShadowRays;
-		Vector v = full_v.multByScalar(scalar);
-		Vector u = full_u.multByScalar(scalar);
-		double sum = 0;
-		for (int i = 0; i < this.settings.NumberOfShadowRays; i++) {
-			for (int j = 0; j < this.settings.NumberOfShadowRays; j++) {
-				sum += pointOnlight(light, corner, v, u, i, j, intersectionPoint);
-			}
-		}
-		//this light source will be multiplied by the number of rays that hit the surface divided by the total number of rays we sent.
-		return sum / (this.settings.NumberOfShadowRays * this.settings.NumberOfShadowRays);
-	}
-
-    private Vector reflectVector(Ray ray, Vector normel ){
-		Vector R = ray.v.add(normel.scalarMult(-2 * normel.dotProduct(ray.v)));   /// formula
+	private Vector reflectVector(Ray ray, Vector normal ){
+		Vector R = ray.v.add(normal.scalarMult(-2 * normal.dotProduct(ray.v)));   /// formula
         R.normalize();
         return R;
     }
 	//  ray-tracing04 p3 Avoiding self shadowing
-	private Vector ReflectionColor(Ray ray, Vector normel, Vector IntersectionP, Material mat, int recDepth) {
+	private Vector ReflectionColor(Ray ray, Vector normal, Vector IntersectionP, Material mat, int recDepth) {
 		Vector color;
 		double epsilon = 0.005;
-		Vector R = reflectVector( ray, normel);
+		Vector R = reflectVector( ray, normal);
 		Ray reflectionRay = new Ray(IntersectionP.add(R.scalarMult(epsilon)), R);
-		Intersection hit = Intersection.FindIntersction(reflectionRay, this.surfaces);
+		Intersection hit = Intersection.getIntersction(reflectionRay, this.surfaces);
 		if (hit.min_t == Double.MAX_VALUE) {
 			color=this.settings.backgroundCol.vecsMult(mat.reflectionCol);
 		
@@ -120,7 +95,7 @@ public class Scene {
 		return color;
 	}
 
-	public Vector culcTransColors(Material mat, Vector N, Ray ray, Vector intersectionPoint, int recDepth) {
+	public Vector TransparencyColors(Material mat, Vector N, Ray ray, Vector intersectionPoint, int recDepth) {
 		Vector col=null;
 		Ray transRay = new Ray(intersectionPoint.add(ray.v.scalarMult(0.001)), ray.v);
 		Intersection transHit = Intersection.FindIntersction(transRay, UpdatedPrimitives);
@@ -135,72 +110,41 @@ public class Scene {
 		col.checkRange();
 		return col;
 	}
-
-	private Color culcRefColors(Ray ray, vector N, vector IntersectionPoint, Material mat, int recDepth) {
-		Color col = new Color();
-
-		vector R = ray.directionVector.add(N.multByScalar(-2 * ray.directionVector.dotProduct(N)));
-		R.normalize();
-		Ray refRay = new Ray(IntersectionPoint.add(R.multByScalar(0.001)), R);
-		Intersection hit = Intersection.FindIntersction(refRay, primitives);
-
-		if (hit.min_t == Double.MAX_VALUE) {
-
-			col.r = (set.backgroundColor[0] * mat.reflectionColor[0]);
-			col.g = (set.backgroundColor[1] * mat.reflectionColor[1]);
-			col.b = (set.backgroundColor[2] * mat.reflectionColor[2]);
-		} else {
-			Color tempCol = color(hit, refRay, recDepth - 1);
-			col.r = (tempCol.r * mat.reflectionColor[0]);
-			col.g = (tempCol.g * mat.reflectionColor[1]);
-			col.b = (tempCol.b * mat.reflectionColor[2]);
-		}
-		if (col.r > 1) {
-			col.r = 1;
-		}
-		if (col.g > 1) {
-			col.g = 1;
-		}
-		if (col.b > 1) {
-			col.b = 1;
-		}
-		return col;
-	}
-
 	
-	private int pointOnlight(Light light, vector corner, vector v, vector u, int i, int j, vector intersectionPoint) {
-		Random random1 = new Random();
-		double num1 = random1.nextDouble();
-		double num2 = random1.nextDouble();
-		vector point = corner.add(v.multByScalar(i + num1).add(u.multByScalar(j + num2)));
-		vector pointDirction = point.sub(intersectionPoint);
-		double Plength = Math.sqrt(pointDirction.dotProduct(pointDirction));
-		if (checkDirectLight(pointDirction, intersectionPoint, Plength)) {
-			return 0;
+
+	private double softShadow(Light light, Vector planeNormal, Vector intersectionPoint) {
+		Plane plane = new Plane(planeNormal,planeNormal.dotProduct(light.lightPos),-1);
+		Vector v_vec = plane.findVec(light.lightPos);
+		Vector u_vec = planeNormal.crossProduct(v_vec);
+		v_vec.normalize();
+		u_vec.normalize();
+
+		Vector corner = (light.lightPos.add(v_vec.scalarMult(-0.5 * light.radius))).add(u_vec.scalarMult(-0.5 * light.radius));
+		Vector full_v = (corner.add(v_vec.scalarMult(light.radius))).add(corner.scalarMult(-1));
+		Vector full_u = (corner.add(u_vec.scalarMult(light.radius))).add(corner.scalarMult(-1));
+		double scalar = 1.0 / this.settings.numShadowRays;
+		Vector v = full_v.scalarMult(scalar);
+		Vector u = full_u.scalarMult(scalar);
+		double sum = 0;
+		for (int i = 0; i < this.settings.numShadowRays; i++) {
+			for (int j = 0; j < this.settings.numShadowRays; j++) {
+				sum += shootRay(light, corner, v, u, i, j, intersectionPoint);
+			}
 		}
-		return 1;
+		//this light source will be multiplied by the number of rays that hit the surface divided by the total number of rays we sent.
+		return sum / (this.settings.numShadowRays * this.settings.numShadowRays);
 	}
 
-	private boolean checkDirectLight(vector L, vector intersectionPoint, double Llength) {
-
-		L.normalize();
-		Ray lightRay = new Ray(intersectionPoint.add(L.multByScalar(0.001)), L);
-		return Intersection.isIntersect(lightRay, scene, Llength);
-
+	private int shootRay(Light light, Vector corner, Vector v, Vector u, int i, int j, Vector intersection) {
+		Random rand = new Random();
+		double x = rand.nextDouble();
+		double y = rand.nextDouble();
+		Vector point = corner.add(v.scalarMult(i + x).add(u.scalarMult(j + y)));
+		Vector pointDirection = point.add(intersection.scalarMult(-1));
+		double directionMagnitud = Math.sqrt(pointDirection.dotProduct(pointDirection)); // ||pointDirction||
+		pointDirection.normalize();
+		Ray lightRay = new Ray(intersection.add(pointDirection.scalarMult(0.001)), pointDirection);
+		return Intersection.isIntersect(lightRay, this, directionMagnitud);
 	}
-
-	private double[][] computeNewCoordinate() {
-		double[][] M = new double[3][3];
-		vector Vx = cam.lookAtDirection.crossProduct(cam.camUpVector);
-		Vx.normalize();
-		cam.camUpVector = (Vx).crossProduct(cam.lookAtDirection);
-		cam.camUpVector.normalize();
-		M[0] = Vx.data;
-		M[1] = cam.camUpVector.data;
-		M[2] = cam.lookAtDirection.data;
-		return M;
-	}
-
-
 }
-	
+

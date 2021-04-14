@@ -11,7 +11,7 @@ public class Intersection {
 		this.min_t = min_t;
 	}
 
-	public static Intersection FindIntersction(Ray ray, List<Surface> Surfaces) {
+	public static Intersection getIntersction(Ray ray, List<Surface> Surfaces) {
 		double t;
 		double min_t = Double.MAX_VALUE;
 		Surface firstSurface = null;
@@ -27,15 +27,15 @@ public class Intersection {
 		return intersection;
 	}
 
-	public static boolean isIntersect(Ray ray, Scene scene, double disToBeat) {
+	public static int isIntersect(Ray ray, Scene scene, double Magnitud) {
 		double t;
 		for (Surface s : scene.surfaces) {
 			t = s.intersect(ray);
-			if (t < disToBeat && t > 0) {
-				return true;
+			if (t < Magnitud && t > 0) {
+				return 1;
 			}
 		}
-		return false;
+		return 0;
 	}
 
 }
