@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d49acb96-4824-46cd-b5dd-9c8e065fb9c6" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/RayTracing/RayTracer.java" beforeDir="false" afterPath="$PROJECT_DIR$/RayTracing/RayTracer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/RayTracing/Scene.java" afterDir="false" />
-    </list>
+    <list default="true" id="d49acb96-4824-46cd-b5dd-9c8e065fb9c6" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +92,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
+    <frame x="-6" y="-6" width="1549" height="837" extended-state="7" />
     <layout>
       <window_info id="Image Layers" />
       <window_info id="Designer" />
