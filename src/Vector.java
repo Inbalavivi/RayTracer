@@ -1,14 +1,12 @@
-package RayTracing;
-
 public class Vector {
-    double x;
-    double y;
-    double z;
+	double x;
+	double y;
+	double z;
 
 	public Vector(double xVal, double yVal, double zVal) {
-        this.x=xVal;
-        this.y=yVal;
-        this.z=zVal;
+		this.x=xVal;
+		this.y=yVal;
+		this.z=zVal;
 	}
 
 	public double dotProduct(Vector otherVec) {
@@ -25,30 +23,30 @@ public class Vector {
 	}
 
 	public Vector add(Vector otherVec) {
-        double x=this.x +otherVec.x;
-        double y=this.y +otherVec.y;
-        double z=this.z +otherVec.z;
+		double x=this.x +otherVec.x;
+		double y=this.y +otherVec.y;
+		double z=this.z +otherVec.z;
 		Vector vec = new Vector(x,y,z);
 		return vec;
 	}
-	
+
 
 	public Vector scalarMult(double scalar) {
-        double x= scalar*this.x;
-        double y= scalar*this.y;
-        double z= scalar*this.z;
+		double x= scalar*this.x;
+		double y= scalar*this.y;
+		double z= scalar*this.z;
 		Vector vec = new Vector(x,y,z);
 		return vec;
 	}
 
-    public Vector vecsMult(Vector otherVec) { // elementwize
+	public Vector vecsMult(Vector otherVec) { // elementwize
 		double x= otherVec.x*this.x;
-        double y= otherVec.y*this.y;
-        double z= otherVec.z*this.z;
+		double y= otherVec.y*this.y;
+		double z= otherVec.z*this.z;
 		Vector vec = new Vector(x,y,z);
 		return vec;
 	}
-    
+
 	public void normalize() {
 		double n = Math.sqrt(this.dotProduct(this));
 		this.x /= n;
