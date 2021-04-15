@@ -9,13 +9,15 @@ public class Scene {
     List<Surface> surfaces;
     List<Light> lights;
 	List<Material> materials;
+	List<Surface> newSurfaces;
 
-    public Scene(Camera cam, GeneralSettings settings, List<Surface> surfaces, List<Light> lights, List<Material> materials){
+    public Scene(Camera cam, GeneralSettings settings, List<Surface> surfaces, List<Light> lights, List<Material> materials, List<Surface> newSurfaces){
         this.cam = cam;
         this.settings = settings;
         this.surfaces = surfaces;
         this.lights = lights;
         this.materials = materials;
+		this.newSurfaces = newSurfaces;
     }
 
 	public Vector color(Intersection hit, Ray ray, int recDepth) {
@@ -94,12 +96,14 @@ public class Scene {
 		color.checkRange();
 		return color;
 	}
+	
 
 	public Vector TransparencyColors(Material mat, Vector N, Ray ray, Vector intersectionPoint, int recDepth) {
 		Vector col=null;
-		Ray transRay = new Ray(intersectionPoint.add(ray.v.scalarMult(0.001)), ray.v);
-		Intersection transHit = Intersection.FindIntersction(transRay, UpdatedPrimitives);
-		UpdatedPrimitives.remove(transHit.firstSurface);
+		double epsilon = 0.005;
+		Ray transRay = new Ray(intersectionPoint.add(ray.v.scalarMult(epsilon)), ray.v);
+		Intersection transHit = Intersection.getIntersction(transRay, newSurfaces);
+		this.newSurfaces.remove(transHit.firstSurface);
 		if (transHit.min_t != Double.MAX_VALUE) {
 			Vector tempCol = color(transHit, transRay, recDepth - 1);
 			col =tempCol;

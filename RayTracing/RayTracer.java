@@ -26,6 +26,7 @@ public class RayTracer {
 	List<Surface> surfaces = new ArrayList<Surface>();
 	List<Material> materials = new ArrayList<Material>();
 	List<Light> lights = new ArrayList<Light>();
+	List<Surface> newSurfaces = new ArrayList<Surface>(surfaces);
 
 	/**
 	 * Runs the ray tracer. Takes scene file, output image file and image size as input.
@@ -36,7 +37,7 @@ public class RayTracer {
 
 			RayTracer tracer = new RayTracer();
 
-                        // Default values:
+            // Default values:
 			tracer.imageWidth = 500;
 			tracer.imageHeight = 500;
 
@@ -166,7 +167,7 @@ public class RayTracer {
 		if ((camera == null) || (settings == null) || (surfaces.size() == 0) || (lights.size() == 0) || (materials.size() == 0)){
 			System.out.println("Scene is not valid");
 		}
-		scene = new Scene(camera, settings, surfaces, lights, materials);		
+		scene = new Scene(camera, settings, surfaces, lights, materials , newSurfaces);		
 		System.out.println("Finished parsing scene file " + sceneFileName);
 	}
 
@@ -217,7 +218,7 @@ public class RayTracer {
 						ray.v.normalize();
 						Intersection hit = Intersection.getIntersction(ray, surfaces);
 						if (hit.min_t != Double.MAX_VALUE) {
-							List<Surface> newSurfaces = new ArrayList<Surface>(surfaces);
+							newSurfaces = new ArrayList<Surface>(surfaces);
 							newSurfaces.remove(hit.firstSurface);
 							Vector color = scene.color(hit, ray, settings.maxNumRec);
 							finalcolor.x += color.x;
@@ -302,5 +303,5 @@ public class RayTracer {
 		public RayTracerException(String msg) {  super(msg); }
 	}
 
-
 }
+
