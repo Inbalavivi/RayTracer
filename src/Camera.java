@@ -1,34 +1,34 @@
 public class Camera {
-    Vector camPosition;
-    Vector lookAtDirection;
-    Vector camUpVector;
-    float camScreenDistance;
-    float camScreenWidth;
+    Vector position;
+    Vector lookAt;
+    Vector upVector;
+    float screenDistance;
+    float screenWidth;
 
     public Camera() {
         // TODO Auto-generated constructor stub
     }
-    public void setcamPosition(Vector camPosition) {
+    public void setcamPosition(Vector camPos) {
 
-        this.camPosition=camPosition;
+        this.position=camPos;
 
     }
     public void SetCamScreenDistance(float camScreenDistance) {
-        this.camScreenDistance=camScreenDistance;
+        this.screenDistance=camScreenDistance;
 
     }
     public void SetCamScreenWidth(float camScreenWidth) {
-        this.camScreenWidth=camScreenWidth;
+        this.screenWidth=camScreenWidth;
 
     }
-    public void setCamLookAtDirection(Vector camLookAtDirection) {
-        camLookAtDirection.normalize();
-        this.lookAtDirection=camLookAtDirection;
+    public void setCamLookAtDirection(Vector camLookAt) {
+        camLookAt.normalize();
+        this.lookAt=camLookAt;
 
     }
-    public void SetCamUpVector(Vector camUpVector) {
-        camUpVector.normalize();
-        this.camUpVector=camUpVector;
+    public void SetCamUpVector(Vector upVector) {
+        upVector.normalize();
+        this.upVector=upVector;
 
     }
 

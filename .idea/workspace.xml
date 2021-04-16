@@ -1,30 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0ab0e3f8-bfe4-466e-ade3-91de793e457a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Camera.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Primitive.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Settings.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/RayTracer.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="0ab0e3f8-bfe4-466e-ade3-91de793e457a" name="Default Changelist" comment="render scene changes">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Box.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Camera.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/GeneralSettings.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Intersection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Intersection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Light.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Light.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Material.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Material.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Plane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Plane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Ray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ray.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/RayTracer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RayTracer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scene.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Sphere.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Sphere.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Surface.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Vector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pics/pool.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pool.png" beforeDir="false" afterPath="$PROJECT_DIR$/pool.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Camera.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RayTracer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RayTracer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,7 +30,11 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Global Libraries" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -57,7 +42,7 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="RayTracer" type="Application" factoryName="Application">
+    <configuration name="RayTracer" type="Application" factoryName="Application" folderName="New Folder">
       <option name="ALTERNATIVE_JRE_PATH" value="$PROJECT_DIR$/../.jdks/openjdk-16" />
       <option name="MAIN_CLASS_NAME" value="RayTracer" />
       <module name="Graphics_RayTracing" />
@@ -90,20 +75,8 @@
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/RayTracer.java</url>
-          <line>267</line>
-          <option name="timeStamp" value="19" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/RayTracer.java</url>
-          <line>258</line>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="render scene changes" />
+    <option name="LAST_COMMIT_MESSAGE" value="render scene changes" />
   </component>
 </project>

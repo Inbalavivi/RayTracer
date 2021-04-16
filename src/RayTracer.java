@@ -98,7 +98,7 @@ public class RayTracer {
 
 
 					cam.setCamLookAtDirection((new Vector(Double.parseDouble(params[3]), Double.parseDouble(params[4]),
-							Double.parseDouble(params[5]))).add(cam.camPosition.scalarMult(-1)));
+							Double.parseDouble(params[5]))).add(cam.position.scalarMult(-1)));
 
 					cam.SetCamUpVector(new Vector(Double.parseDouble(params[6]), Double.parseDouble(params[7]),
 							Double.parseDouble(params[8])));
@@ -118,7 +118,6 @@ public class RayTracer {
 					set.setMaxNumberOfRecursion(Integer.parseInt(params[4]));
 
 					set.setSuperSamplingLevel(1);
-
 
 					System.out.println(String.format("Parsed general settings (line %d)", lineNum));
 				} else if (code.equals("mtl")) {
@@ -159,14 +158,10 @@ public class RayTracer {
 
 					Plane plane = new Plane();
 
-					Vector normal = new Vector(Double.parseDouble(params[0]), Double.parseDouble(params[1]),
-							Double.parseDouble(params[2]));
+					Vector normal = new Vector(Double.parseDouble(params[0]), Double.parseDouble(params[1]), Double.parseDouble(params[2]));
 					plane.setNormal(normal);
-
 					plane.setOffset(Float.parseFloat(params[3]));
-
 					plane.setMaterialIndex(Integer.parseInt(params[4]));
-
 					primitives.add(plane);
 
 					System.out.println(String.format("Parsed plane (line %d)", lineNum));
@@ -217,7 +212,6 @@ public class RayTracer {
 		if (!scene.checkValid()) {
 			System.out.println("Error in Scene file");
 		}
-
 		System.out.println("Finished parsing scene file " + sceneFileName);
 
 	}
@@ -229,71 +223,61 @@ public class RayTracer {
 		long startTime = System.currentTimeMillis();
 
 		// Create a byte array to hold the pixel data:
-		byte[] rgbData = new byte[this.imageWidth * this.imageHeight * 3];
-		int ssl = set.SuperSamplingLevel;
-		int ssHeight = imageHeight * ssl;
-		int ssWidth = imageWidth * ssl;
+		byte[] rgbData = new byte[imageWidth * imageHeight * 3];
 
-		double[][] M = computeNewCoordinate();
-		Vector Vx = new Vector(M[0][0],M[0][1],M[0][2]);
-		Vector Vy = new Vector(M[1][0],M[1][1],M[1][2]);
-		Vector Vz = new Vector(M[2][0],M[2][1],M[2][2]);
-		Vx.normalize();
-		Vy.normalize();
-		Vz.normalize();
-		Vector P = (Vz.scalarMult(cam.camScreenDistance)).add(cam.camPosition);
-		double aspectRatio = imageHeight / imageWidth;
-		double camScreenHeight = aspectRatio * cam.camScreenWidth;
+		Vector VecX = cam.lookAt.crossProduct(cam.upVector);
+		VecX.normalize();
+		cam.upVector = VecX.crossProduct(cam.lookAt);
+		cam.upVector.normalize();
+		Vector V_x = new Vector(VecX.x, VecX.y, VecX.z);
+		V_x.normalize();
+		Vector V_y = new Vector(cam.upVector.x, cam.upVector.y, cam.upVector.z);
+		V_y.normalize();
+		Vector V_z = new Vector(cam.lookAt.x, cam.lookAt.y, cam.lookAt.z);
+		V_z.normalize();
 
-		Vector P0 = ((Vy.scalarMult(-1 * camScreenHeight / 2)).add(Vx.scalarMult(-1 * cam.camScreenWidth / 2)))
-				.add(P);
+		Vector P = (V_z.scalarMult(cam.screenDistance)).add(cam.position);
+		double screenHeight = (imageHeight * cam.screenWidth)/ imageWidth ;
 
-		double pixelWidth = (cam.camScreenWidth / ssWidth);
-		double pixelHeight = (camScreenHeight / ssHeight);
+		Vector P0 = ((V_y.scalarMult(-1 * screenHeight / 2)).add(V_x.scalarMult(-1 * cam.screenWidth / 2))).add(P);
 
 		for (int y = 0; y < imageHeight; y++) {
 			P = P0;
 			for (int x = 0; x < imageWidth; x++) {
 				Vector finalcolor = new Vector(0.0, 0.0, 0.0);
 				Vector ssP = P;
-				for (int sRaw = 0; sRaw < ssl; sRaw++) {
-					for (int sCol = 0; sCol < ssl; sCol++) {
-						double heightOffset = ((ssl > 1) ? ((new Random().nextDouble() + sRaw) * (pixelWidth)) : 0);
-						double widthOffset = ((ssl > 1) ? ((new Random().nextDouble() + sCol) * (pixelHeight)) : 0);
-						ssP = (P.add(Vy.scalarMult(heightOffset))).add(Vx.scalarMult(widthOffset));
-						Ray ray = new Ray(cam.camPosition, ssP.add(cam.camPosition.scalarMult(-1)));
-						ray.directionVector.normalize();
-						Intersection hit = Intersection.FindIntersction(ray, primitives);
-						if (hit.min_t == Double.MAX_VALUE) {
-							finalcolor.x += set.backgroundColor[0];
-							finalcolor.y += set.backgroundColor[1];
-							finalcolor.z += set.backgroundColor[2];
-						} else {
-							UpdatedPrimitives = new ArrayList<Primitive>(primitives);
-							UpdatedPrimitives.remove(hit.min_primitive);
-							Vector col = color(hit, ray, set.MaxNumberOfRecursion);
-							finalcolor.x += col.x;
-							finalcolor.y += col.y;
-							finalcolor.z += col.z;
-						}
-					}
+				double heightOffset = 0;
+				double widthOffset = 0;
+				ssP = (P.add(V_y.scalarMult(heightOffset))).add(V_x.scalarMult(widthOffset));
+				Ray ray = new Ray(cam.position, ssP.add(cam.position.scalarMult(-1)));
+				ray.directionVector.normalize();
+				Intersection hit = Intersection.FindIntersction(ray, primitives);
+				if (hit.min_t == Double.MAX_VALUE) {
+					finalcolor.x += set.backgroundColor[0];
+					finalcolor.y += set.backgroundColor[1];
+					finalcolor.z += set.backgroundColor[2];
+				} else {
+					UpdatedPrimitives = new ArrayList<Primitive>(primitives);
+					UpdatedPrimitives.remove(hit.min_primitive);
+					Vector col = color(hit, ray, set.MaxNumberOfRecursion);
+					finalcolor.x += col.x;
+					finalcolor.y += col.y;
+					finalcolor.z += col.z;
 				}
-				rgbData[(this.imageWidth * (this.imageHeight - y - 1) + imageWidth - x - 1)
-						* 3] = (byte) (finalcolor.x * 255 / (ssl * ssl));
-				rgbData[(this.imageWidth * (this.imageHeight - y - 1) + imageWidth - x - 1) * 3
-						+ 1] = (byte) (finalcolor.y * 255 / (ssl * ssl));
-				rgbData[(this.imageWidth * (this.imageHeight - y - 1) + imageWidth - x - 1) * 3
-						+ 2] = (byte) (finalcolor.z * 255 / (ssl * ssl));
+				// Write pixel color values in RGB format to rgbData:
+				// Pixel [x, y] red component is in rgbData[(y * this.imageWidth + x) * 3]
+				// green component is in rgbData[(y * this.imageWidth + x) * 3 + 1]
+				// blue component is in rgbData[(y * this.imageWidth + x) * 3 + 2]
+				rgbData[(imageWidth * (imageHeight - y - 1) + imageWidth - x - 1) * 3]    = (byte) (finalcolor.x * 255 );
+				rgbData[(imageWidth * (imageHeight - y - 1) + imageWidth - x - 1) * 3 + 1] = (byte) (finalcolor.y * 255);
+				rgbData[(imageWidth * (imageHeight - y - 1) + imageWidth - x - 1) * 3 + 2] = (byte) (finalcolor.z * 255);
 
-				P = P.add(Vx.scalarMult(cam.camScreenWidth / imageWidth));
+				P = P.add(V_x.scalarMult(cam.screenWidth / imageWidth));
 
 			}
-			P0 = P0.add(Vy.scalarMult(camScreenHeight / imageHeight));
+			P0 = P0.add(V_y.scalarMult(screenHeight / imageHeight));
 		}
-		// Write pixel color values in RGB format to rgbData:
-		// Pixel [x, y] red component is in rgbData[(y * this.imageWidth + x) * 3]
-		// green component is in rgbData[(y * this.imageWidth + x) * 3 + 1]
-		// blue component is in rgbData[(y * this.imageWidth + x) * 3 + 2]
+
 		//
 		// Each of the red, green and blue components should be a byte, i.e. 0-255
 
@@ -477,20 +461,6 @@ public class RayTracer {
 
 	}
 
-	private double[][] computeNewCoordinate() {
-		double[][] M = new double[3][3];
-		Vector Vx = cam.lookAtDirection.crossProduct(cam.camUpVector);
-		Vx.normalize();
-		cam.camUpVector = (Vx).crossProduct(cam.lookAtDirection);
-		cam.camUpVector.normalize();
-		double[] data={Vx.x,Vx.y,Vx.z};
-		double[] upVecData={cam.camUpVector.x,cam.camUpVector.y,cam.camUpVector.z};
-		double[] lookAtData={cam.lookAtDirection.x,cam.lookAtDirection.y,cam.lookAtDirection.z};
-		M[0] = data;
-		M[1] = upVecData;
-		M[2] = lookAtData;
-		return M;
-	}
 
 	//////////////////////// FUNCTIONS TO SAVE IMAGES IN PNG FORMAT
 	//////////////////////// //////////////////////////////////////////
