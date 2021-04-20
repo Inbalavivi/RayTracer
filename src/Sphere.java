@@ -1,35 +1,34 @@
 public class Sphere implements Surface{
-	Vector centerPos;
+	Vector center;
 	double radius;
 	int materialIndex;
 
-
 	public Sphere(Vector center,double radiusVal,int material) {
-		this.centerPos = center;
+		this.center = center;
 		this.radius=radiusVal;
 		this.materialIndex=material;
 	}
 
 	public double intersect(Ray ray)  {
-		Vector l= this.centerPos.add((ray.p0).scalarMult(-1));
+		Vector l = this.center.add((ray.p0).scalarMult(-1));
 		double t_ca = l.dotProduct(ray.v);
-		if(t_ca <0) {
+		if(t_ca < 0) {
 			return 0;
 		}
-		double d_2 = (l.dotProduct(l)) - (t_ca * t_ca);
-		double r_2=this.radius * this.radius;
-		if(d_2 > r_2) {
+		double d_2 = (l.dotProduct(l)) - Math.pow(t_ca , 2);
+		double r_2 = Math.pow(this.radius, 2);
+		if( r_2 < d_2) {
 			return 0;
 		}
 		double t_hc = Math.sqrt(r_2 - d_2);
-		double t1 =t_ca - t_hc;
-		double t2 =t_ca + t_hc;
+		double t1 = t_ca - t_hc;
+		double t2 =  t_hc + t_ca;
 		if (t1<0 && t2<0){
 			return 0;
 		}
-		double min_t=Math.min(t1,t2);
-		if (min_t<0){
-			if(min_t==t1){
+		double min_t = Math.min(t1,t2);
+		if (min_t < 0){
+			if(min_t == t1){
 				return t2;
 			}
 			else{
@@ -38,16 +37,4 @@ public class Sphere implements Surface{
 		}
 		return min_t;
 	}
-
-
-	public Vector getNormal(Vector intersection) {
-		Vector normal = intersection.add(this.centerPos.scalarMult(-1)); /// N = P0-P (P=looAt)
-		normal.normalize();
-		return normal;
-	}
-
-	public int getMaterialIndex() {
-		return this.materialIndex;
-	}
-
 }

@@ -8,8 +8,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
 import javax.imageio.ImageIO;
 
 /**
@@ -19,10 +17,10 @@ public class RayTracer {
 
 	public int imageWidth;
 	public int imageHeight;
-	List<Surface> surfaces = new ArrayList<Surface>();
-	List<Surface> newSurfaces = new ArrayList<Surface>();
-	List<Material> materials = new ArrayList<Material>();
-	List<Light> lights = new ArrayList<Light>();
+	List<Surface> surfaces = new ArrayList<>();
+	List<Surface> newSurfaces = new ArrayList<>();
+	List<Material> materials = new ArrayList<>();
+	List<Light> lights = new ArrayList<>();
 	Camera camera=null;
 	Settings set = null;
 	Scene scene = null;
@@ -35,7 +33,6 @@ public class RayTracer {
 		try {
 
 			RayTracer tracer = new RayTracer();
-
 			// Default values:
 			tracer.imageWidth = 500;
 			tracer.imageHeight = 500;
@@ -51,11 +48,8 @@ public class RayTracer {
 				tracer.imageWidth = Integer.parseInt(args[2]);
 				tracer.imageHeight = Integer.parseInt(args[3]);
 			}
-
-
 			// Parse scene file:
 			tracer.parseScene(sceneFileName);
-
 			// Render scene:
 			tracer.renderScene(outputFileName);
 
@@ -66,8 +60,6 @@ public class RayTracer {
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
-
-
 	}
 
 	/**
@@ -108,14 +100,15 @@ public class RayTracer {
 					boolean fisheye=Boolean.parseBoolean(params[11]);
 					float fisheyeTransVal=Float.parseFloat(params[12]);
 					camera =new Camera(position,lookAt,upVec,distance,width,fisheye,fisheyeTransVal);
-
 					System.out.println(String.format("Parsed camera parameters (line %d)", lineNum));
+
 				} else if (code.equals("set")) {
 					Vector backgroundCol = new Vector (Double.parseDouble(params[0]), Double.parseDouble(params[1]),Double.parseDouble(params[2]));
 					int numRays=Integer.parseInt(params[3]);
 					int numRec=Integer.parseInt(params[4]);
 					set = new Settings(backgroundCol ,numRays, numRec);
 					System.out.println(String.format("Parsed general settings (line %d)", lineNum));
+
 				} else if (code.equals("mtl")) {
 					Vector diffuseColor = new Vector(Double.parseDouble(params[0]), Double.parseDouble(params[1]),Double.parseDouble(params[2]) );
 					Vector specularColor = new Vector( Double.parseDouble(params[3]), Double.parseDouble(params[4]),Double.parseDouble(params[5]) );
@@ -125,11 +118,13 @@ public class RayTracer {
 					Material material = new Material(diffuseColor,specularColor,reflectionColor,shininess,transparency);
 					materials.add(material);
 					System.out.println(String.format("Parsed material (line %d)", lineNum));
+
 				} else if (code.equals("sph")) {
 					Vector center = new Vector(Double.parseDouble(params[0]), Double.parseDouble(params[1]),Double.parseDouble(params[2]));
 					Sphere sphere = new Sphere(center, Double.parseDouble(params[3]),Integer.parseInt(params[4]));
 					surfaces.add(sphere);
 					System.out.println(String.format("Parsed sphere (line %d)", lineNum));
+
 				} else if (code.equals("pln")) {
 					Vector normal=new Vector(Double.parseDouble(params[0]), Double.parseDouble(params[1]),Double.parseDouble(params[2]));
 					double offset=Double.parseDouble(params[3]);
@@ -137,21 +132,17 @@ public class RayTracer {
 					Plane plane = new Plane(normal,offset,index);
 					surfaces.add(plane);
 					System.out.println(String.format("Parsed plane (line %d)", lineNum));
-				} else if (code.equals("lgt")) {
 
+				} else if (code.equals("lgt")) {
 					Vector LightPosition = new Vector(Double.parseDouble(params[0]), Double.parseDouble(params[1]),
 							Double.parseDouble(params[2]));
-
 					Vector LightColor = new Vector ( Double.parseDouble(params[3]), Double.parseDouble(params[4]),
 							Double.parseDouble(params[5]) );
 					float specularIntensity = Float.parseFloat(params[6]);
 					float shadowIntensity = Float.parseFloat(params[7]);
 					float lightRadius = Float.parseFloat(params[8]);
-
 					Light light = new Light(LightPosition, LightColor, specularIntensity, shadowIntensity, lightRadius);
-
 					lights.add(light);
-
 					System.out.println(String.format("Parsed light (line %d)", lineNum));
 				} else {
 					System.out.println(String.format("ERROR: Did not recognize object: %s (line %d)", code, lineNum));
@@ -166,7 +157,6 @@ public class RayTracer {
 			System.out.println("Scene is not valid");
 		}
 		scene = new Scene(camera, set, surfaces, lights, materials , newSurfaces);
-
 		System.out.println("Finished parsing scene file " + sceneFileName);
 	}
 
@@ -176,7 +166,6 @@ public class RayTracer {
 	public void renderScene(String outputFileName)
 	{
 		long startTime = System.currentTimeMillis();
-
 		// Create a byte array to hold the pixel data:
 		byte[] rgbData = new byte[this.imageWidth * this.imageHeight * 3];
 
@@ -184,40 +173,44 @@ public class RayTracer {
 		vec.normalize();
 		camera.upVector = camera.lookAt.crossProduct(vec);
 		camera.upVector.normalize();
-		Vector V_x = new Vector(vec.x, vec.y, vec.z);
-		V_x.normalize();
-		Vector V_y = new Vector(camera.upVector.x, camera.upVector.y, camera.upVector.z);
-		V_y.normalize();
-		Vector V_z = new Vector(camera.lookAt.x, camera.lookAt.y, camera.lookAt.z);
-		V_z.normalize();
+		Vector v_x = new Vector(vec.x, vec.y, vec.z);
+		v_x.normalize();
+		Vector v_y = new Vector(camera.upVector.x, camera.upVector.y, camera.upVector.z);
+		v_y.normalize();
+		Vector v_z = new Vector(camera.lookAt.x, camera.lookAt.y, camera.lookAt.z);
+		v_z.normalize();
 
-		Vector P = (V_z.scalarMult(camera.screenDistance)).add(camera.position);
+		// The main loop
+		// P = E + v_z*f
+		Vector P = (camera.position).add(v_z.scalarMult(camera.screenDistance));
+		//Vector P = (v_z.scalarMult(camera.screenDistance)).add(camera.position);
 		double screenHeight = (imageHeight * camera.screenWidth)/ imageWidth ;
-		Vector P0 = ((V_y.scalarMult(-1 * screenHeight / 2)).add(V_x.scalarMult(-1 * camera.screenWidth / 2))).add(P);
+		// p0 = P - width*v_x - height*v_y
+		Vector P0 = (v_x.scalarMult(camera.screenWidth * (-1) / 2)).add( v_y.scalarMult(screenHeight * (-1) / 2)).add(P);
 
 		for (int y = 0; y <imageHeight ; y++) {
 			P = P0;
 			for (int x = 0; x < imageWidth; x++) {
-				Vector finalcolor = new Vector(0.0, 0.0, 0.0);
-				Vector ssP = P;
+				Vector pixelColor = new Vector(0.0, 0.0, 0.0);
 				double heightOffset = 0;
 				double widthOffset = 0;
 				double min_t;
 				Surface firstSurface;
-				ssP = (P.add(V_y.scalarMult(heightOffset))).add(V_x.scalarMult(widthOffset));
-				Ray ray = new Ray(camera.position, ssP.add(camera.position.scalarMult(-1)));
-				ray.v.normalize();
+				P = (P.add(v_y.scalarMult(heightOffset))).add(v_x.scalarMult(widthOffset));
+				// Ray = E + t*(P - E )
+				Ray ray = new Ray(camera.position, P.add(camera.position.scalarMult(-1)));
 
-				Object[] intersection = Scene.getIntersction(ray, surfaces);
+				Object[] intersection = Scene.getIntersection(ray, surfaces);
 				min_t = (double) intersection[0];
 				firstSurface = (Surface)intersection[1];
-				if (min_t == Double.MAX_VALUE) {
-					finalcolor=finalcolor.add((set.backgroundCol));
-				} else {
+
+				if (min_t == Double.MAX_VALUE) { // default min_t == infinity  ==> there is no intersection
+					pixelColor = pixelColor.add((set.backgroundCol));
+				} else { // there is intersection
 					newSurfaces = new ArrayList<Surface>(surfaces);
 					newSurfaces.remove(firstSurface);
-					Vector col = scene.color(firstSurface,min_t, ray, set.maxNumRec);
-					finalcolor=finalcolor.add(col);
+					Vector col = scene.getColor(firstSurface,min_t, ray, set.maxNumRec);
+					pixelColor = pixelColor.add(col);
 				}
 				// Put your ray tracing code here!
 				//
@@ -227,14 +220,14 @@ public class RayTracer {
 				//             blue component is in rgbData[(y * this.imageWidth + x) * 3 + 2]
 				//
 				// Each of the red, green and blue components should be a byte, i.e. 0-255
-				rgbData[(imageWidth *y +x) * 3]    = (byte) (finalcolor.x * 255 );
-				rgbData[(imageWidth *y +x) * 3 + 1] = (byte) (finalcolor.y * 255);
-				rgbData[(imageWidth *y +x)  * 3 + 2] = (byte) (finalcolor.z * 255);
-
-				P = P.add(V_x.scalarMult(camera.screenWidth / imageWidth));
-
+				rgbData[(imageWidth *y +x) * 3]    = (byte) (pixelColor.x * 255 );
+				rgbData[(imageWidth *y +x) * 3 + 1] = (byte) (pixelColor.y * 255);
+				rgbData[(imageWidth *y +x)  * 3 + 2] = (byte) (pixelColor.z * 255);
+				//move one pixel along the vector v_x
+				P = P.add(v_x.scalarMult(camera.screenWidth/imageWidth));
 			}
-			P0 = P0.add(V_y.scalarMult(screenHeight / imageHeight));
+			//move one pixel along the vector v_y
+			P0 = P0.add(v_y.scalarMult(screenHeight/imageHeight));
 		}
 
 		long endTime = System.currentTimeMillis();

@@ -3,14 +3,20 @@
   <component name="ChangeListManager">
     <list default="true" id="0ab0e3f8-bfe4-466e-ade3-91de793e457a" name="Default Changelist" comment="fix intersection">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Intersection.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Camera.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Camera.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer$RayTracerException.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer$RayTracerException.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Scene.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Scene.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pool.png" beforeDir="false" afterPath="$PROJECT_DIR$/pool.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Intersection.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Camera.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Light.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Light.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Plane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Plane.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ray.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/RayTracer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RayTracer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Sphere.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Sphere.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Surface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Surface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Vector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vector.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,6 +80,13 @@
       <option name="presentableId" value="Default" />
       <updated>1618507201913</updated>
     </task>
+    <task id="LOCAL‎00001" summary="fix intersection">
+      <created>1618932214700</created>
+      <option name="number" value="LOCAL‎00001" />
+      <option name="presentableId" value="LOCAL‎00001" />
+      <updated>1618932214700</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">

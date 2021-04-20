@@ -17,43 +17,60 @@ public class Scene {
         this.materials = materials;
         this.newSurfaces = newSurfaces;
     }
-    public Vector color(Surface firstSurface,double min_t, Ray ray, int recDepth) {
+    public Vector getColor(Surface firstSurface,double min_t, Ray ray, int recDepth) {
         if (recDepth == 0) {
             return  new Vector(this.settings.backgroundCol.x, this.settings.backgroundCol.y, this.settings.backgroundCol.z);
         }
         Vector intersection = ray.p0.add(ray.v.scalarMult(min_t)); /// ?
-        Vector N = firstSurface.getNormal(intersection);
+
+        Vector normal = new Vector(0,0,0);
+        Vector N = new Vector(0,0,0);
+        if( firstSurface instanceof Sphere){
+            normal = intersection.add(((Sphere)firstSurface).center.scalarMult(-1)); /// N = P0 - P (P=looAt)
+            normal.normalize();
+            N = normal;
+        }
+
+        if( firstSurface instanceof Plane){
+            ((Plane) firstSurface).normal.normalize();
+            N = ((Plane) firstSurface).normal;
+        }
+
         if (N.dotProduct(ray.v) > 0) {
             N = N.scalarMult(-1);
         }
         N.normalize();
         Vector col = new Vector(0,0,0);
-        Material mat = materials.get(firstSurface.getMaterialIndex() - 1);
+
+        int index = 0;
+        if(firstSurface instanceof Sphere){index = ((Sphere) firstSurface).materialIndex;}
+        if(firstSurface instanceof Plane){index = ((Plane) firstSurface).materialIndex;}
+        Material mat = materials.get(index - 1);
 
         for (Light light : this.lights) {
             Vector L = light.position.add(intersection.scalarMult(-1));
-            Vector tmp=new Vector(0,0,0);
+            Vector tmp;
             L.normalize();
-            double cTeta = N.dotProduct(L);
-            if (cTeta < 0) {
+            double N_dot_L = N.dotProduct(L);
+            if (N_dot_L < 0) {
                 continue;
             }
-            tmp=mat.diffusion.vecsMult(light.color);
-            tmp=tmp.scalarMult(cTeta);
+            tmp = mat.diffusion.vecsMult(light.color);
+            tmp = tmp.scalarMult(N_dot_L);
             Vector R = N.scalarMult((L.scalarMult(2).dotProduct(N))).add(L.scalarMult(-1));
-            double sTeta = Math.pow(R.dotProduct(ray.v.scalarMult(-1)),
-                    mat.shininess);
-            tmp=tmp.add(mat.specular.vecsMult(light.color).scalarMult(sTeta).scalarMult(light.specularIntensity));
-            double SoftshadowIntensity = softShadow(light, L.scalarMult(-1), intersection);
+
+            double Value = Math.pow(R.dotProduct(ray.v.scalarMult(-1)), mat.shininess);
+            tmp = tmp.add(mat.specular.vecsMult(light.color).scalarMult(Value).scalarMult(light.specularIntensity));
+            double softShadowIntensity = softShadow(light, L.scalarMult(-1), intersection);
             Vector shadowVec1=new Vector(light.shadowIntensity,light.shadowIntensity,light.shadowIntensity);
             Vector shadowVec2=new Vector(1-light.shadowIntensity,1-light.shadowIntensity,1-light.shadowIntensity);
 
-            col=col.add(tmp.vecsMult((shadowVec2.add(shadowVec1.scalarMult(SoftshadowIntensity)))));
+            col = col.add(tmp.vecsMult((shadowVec2.add(shadowVec1.scalarMult(softShadowIntensity)))));
 
         }
         Vector transfCol = new Vector(0,0,0);
         if (mat.transparency > 0) {
-            transfCol = TransparencyColors(mat, N, ray, intersection, recDepth);
+            transfCol = TransparencyColors( ray, intersection, recDepth);
         }
         Vector reflectionColor = new Vector(0,0,0);
         if (mat.reflection.x > 0 || mat.reflection.y > 0 || mat.reflection.z > 0) {
@@ -64,7 +81,6 @@ public class Scene {
         col.checkRange();
         return col;
     }
-
 
     public Vector reflectVector(Ray ray, Vector normal ){
         Vector R = ray.v.add(normal.scalarMult(-2 * normal.dotProduct(ray.v)));   /// formula
@@ -80,7 +96,7 @@ public class Scene {
         Vector R = reflectVector( ray, normal);
         Ray reflectionRay = new Ray(IntersectionP.add(R.scalarMult(epsilon)), R);
 
-        Object[] intersection = Scene.getIntersction(reflectionRay,this.surfaces);
+        Object[] intersection = Scene.getIntersection(reflectionRay,this.surfaces);
         min_t = (double) intersection[0];
         firstSurface = (Surface)intersection[1];
 
@@ -88,7 +104,7 @@ public class Scene {
             color=this.settings.backgroundCol.vecsMult(mat.reflection);
 
         } else {
-            Vector tempCol = color(firstSurface,min_t, reflectionRay, recDepth - 1);
+            Vector tempCol = getColor(firstSurface,min_t, reflectionRay, recDepth - 1);
             color=tempCol.vecsMult(mat.reflection);
 
         }
@@ -96,33 +112,24 @@ public class Scene {
         return color;
     }
 
-
-
-//    double min_t;
-//    Surface firstSurface;
-//    Object[] intersection = Scene.getIntersction(transRay, newSurfaces);
-//    min_t = (double) intersection[0];
-//    firstSurface = (Surface)intersection[1];
-
-    public Vector TransparencyColors(Material mat, Vector N, Ray ray, Vector intersectionPoint, int recDepth) {
+    public Vector TransparencyColors( Ray ray, Vector intersectionPoint, int recDepth) {
         Vector col;
         double min_t;
         Surface firstSurface;
         double epsilon = 0.005;
         Ray transRay = new Ray(intersectionPoint.add(ray.v.scalarMult(epsilon)), ray.v);
-        Object[] intersection = Scene.getIntersction(transRay, newSurfaces);
+        Object[] intersection = Scene.getIntersection(transRay, newSurfaces);
         min_t = (double) intersection[0];
         firstSurface = (Surface)intersection[1];
 
-
         this.newSurfaces.remove(firstSurface);
-        if (min_t != Double.MAX_VALUE) {
-            Vector tempCol = color(firstSurface,min_t, transRay, recDepth - 1);
-            col =tempCol;
+        if (min_t == Double.MAX_VALUE) {
+            col =this.settings.backgroundCol;
 
         } else {
-            col =this.settings.backgroundCol;
+            col = getColor(firstSurface,min_t, transRay, recDepth - 1);
         }
+
         col.checkRange();
         return col;
     }
@@ -133,46 +140,43 @@ public class Scene {
         Vector u_vec = planeNormal.crossProduct(v_vec);
         v_vec.normalize();
         u_vec.normalize();
-        Vector corner = (light.position.add(v_vec.scalarMult(-0.5 * light.radius))).add(u_vec.scalarMult(-0.5 * light.radius));
-        Vector full_v = (corner.add(v_vec.scalarMult(light.radius))).add(corner.scalarMult(-1));
-        Vector full_u = (corner.add(u_vec.scalarMult(light.radius))).add(corner.scalarMult(-1));
+        Vector edge = (light.position.add(v_vec.scalarMult(-0.5 * light.radius))).add(u_vec.scalarMult(-0.5 * light.radius));
+        Vector full_v = (edge.add(v_vec.scalarMult(light.radius))).add(edge.scalarMult(-1));
+        Vector full_u = (edge.add(u_vec.scalarMult(light.radius))).add(edge.scalarMult(-1));
         double scalar = 1.0 / this.settings.numShadowRays;
         Vector v = full_v.scalarMult(scalar);
         Vector u = full_u.scalarMult(scalar);
         double sum = 0;
         for (int i = 0; i < this.settings.numShadowRays; i++) {
             for (int j = 0; j < this.settings.numShadowRays; j++) {
-                sum += shootRay(light, corner, v, u, i, j, intersectionPoint);
+                sum += shootRay( edge, v, u, i, j, intersectionPoint);
             }
         }
         //this light source will be multiplied by the number of rays that hit the surface divided by the total number of rays we sent.
-        return sum / (this.settings.numShadowRays * this.settings.numShadowRays);
+        return sum / Math.pow(this.settings.numShadowRays , 2);
     }
 
-    public int shootRay(Light light, Vector corner, Vector v, Vector u, int i, int j, Vector intersection) {
+    public int shootRay( Vector corner, Vector v, Vector u, int i, int j, Vector intersection) {
         Random rand = new Random();
         double x = rand.nextDouble();
         double y = rand.nextDouble();
         Vector point = corner.add(v.scalarMult(i + x).add(u.scalarMult(j + y)));
         Vector pointDirection = point.add(intersection.scalarMult(-1));
-        double directionMagnitud = Math.sqrt(pointDirection.dotProduct(pointDirection)); // ||pointDirction||
+        double directionMagnitude = Math.sqrt(pointDirection.dotProduct(pointDirection)); // ||pointDirction||
         pointDirection.normalize();
         Ray lightRay = new Ray(intersection.add(pointDirection.scalarMult(0.001)), pointDirection);
-        if(isIntersect(lightRay, this, directionMagnitud)==0){
+        if(checkIfIntersect(lightRay, this, directionMagnitude)==0){
             return 1;
         }
         return 0;
     }
-//    Object[] arr = new Object[6];
-//
-//    arr[0] = new String("First Pair");
-//    arr[1] = new Integer(1);
 
-    public static Object[] getIntersction(Ray ray, List<Surface> Surfaces) { /// return [min_t, firstSurface]
-        double t;
-        double min_t = Double.MAX_VALUE;
+    public static Object[] getIntersection(Ray ray, List<Surface> Surfaces) { /// return [min_t, firstSurface]
+        double min_t = Double.MAX_VALUE; // min_t = infinity
         Surface firstSurface = null;
         Object[] intersection = new Object[2];
+        double t;
+
         for (Surface s : Surfaces) {
             t = s.intersect(ray);
             if (t < min_t && t > 0) {
@@ -182,15 +186,14 @@ public class Scene {
         }
         intersection[0] = min_t;
         intersection[1] = firstSurface;
-        //Intersection intersection = new Intersection(min_t, firstSurface);
         return intersection;
     }
 
-    public static int isIntersect(Ray ray, Scene scene, double Magnitud) {
+    public static int checkIfIntersect(Ray ray, Scene scene, double Magnitude) {
         double t;
         for (Surface s : scene.surfaces) {
             t = s.intersect(ray);
-            if (t < Magnitud && t > 0) {
+            if (t < Magnitude && t > 0) {
                 return 1;
             }
         }
