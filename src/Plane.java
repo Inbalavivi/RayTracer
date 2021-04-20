@@ -1,44 +1,30 @@
-public class Plane implements Primitive {
+public class Plane implements Surface {
 	Vector normal;
 	double offset;
 	int materialIndex;
 
-	public Plane() {};
-
-	void setNormal(Vector normal) {
+	public Plane(Vector normal,double offset , int matindex) {
 		normal.normalize();
 		this.normal=normal;
-	}
-	void setOffset(double offset) {
 		this.offset=-1*offset;
-	}
-	void setMaterialIndex(int index) {
-		this.materialIndex=index;
+		this.materialIndex=matindex;
 	}
 
-	@Override
-	public double intersecte(Ray ray)  {
-		double t= (-1) * (ray.basePoint.dotProduct(this.normal)+ this.offset) / (ray.directionVector.dotProduct(this.normal));
+	public double intersect(Ray ray)  {
+		double t= (-1) * (ray.p0.dotProduct(this.normal)+ this.offset) / (ray.v.dotProduct(this.normal));
 		return t;
 	}
 
-	@Override
-	public Vector findNormal(Vector intersectionPoint) {
+	public Vector getNormal(Vector intersectionPoint) {
 		this.normal.normalize();
 		return this.normal;
 	}
 
-	@Override
-	public int getMterialIndex() {
+	public int getMaterialIndex() {
 		return this.materialIndex;
 	}
 
-	public double findOffset(Vector point) {
-		return (this.normal.dotProduct(point));
-	}
-
-
-	public Vector findVecOnPlane(Vector point) {
+	public Vector findVec(Vector point) {
 		double z = -1* (this.normal.x*1+this.normal.y*1+this.offset)/this.normal.z;
 		Vector z_vec = new Vector(1,1,z);
 		Vector newVector = z_vec.add(point.scalarMult(-1));

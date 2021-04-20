@@ -1,19 +1,21 @@
-
 public class Light {
-
-	Vector lightPosition;
-	Vector lightColor;
+	Vector position;
+	Vector color;
 	float specularIntensity;
 	float shadowIntensity;
-	float lightRadius;
+	float radius;
+	Vector corner;
 
-	public Light(Vector lightPosition, Vector lightColor, float specularIntensity, float shadowIntensity,
-				 float lightRadius) {
-		this.lightPosition=lightPosition;
-		this.lightColor=lightColor;
-		this.specularIntensity=specularIntensity;
-		this.shadowIntensity=shadowIntensity;
-		this.lightRadius=lightRadius;
+	public Light(Vector pos, Vector col, float specularIntens, float shadowIntens, float radiusVal) {
+		this.position=pos;
+		this.color=col;
+		this.specularIntensity=specularIntens;
+		this.shadowIntensity=shadowIntens;
+		this.radius=radiusVal;
+	}
+
+	public void setCorner(Vector corner){
+		this.corner=corner;
 	}
 
 }

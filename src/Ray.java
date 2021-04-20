@@ -1,11 +1,9 @@
 public class Ray {
-	Vector basePoint;
-	Vector directionVector;
-	public Ray(Vector camPosition, Vector direction) {
-		this.basePoint = camPosition;
-		this.directionVector = direction;
+	Vector p0;  //basePoint = camPosition;
+	Vector v;  	//directionVector;
+
+	public Ray(Vector camPos, Vector v ) {
+		this.p0 = camPos;
+		this.v = v;
 	}
-
-
-
 }

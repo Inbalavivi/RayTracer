@@ -4,32 +4,21 @@ public class Camera {
     Vector upVector;
     float screenDistance;
     float screenWidth;
+    boolean fisheye=false;
+    float fisheyeTransVal=(float)0.5;
+    //Vector direction;
 
-    public Camera() {
-        // TODO Auto-generated constructor stub
+    //add direction
+    public Camera(Vector pos,Vector lookAt,Vector upVec,float distance,float width,boolean isfisheye, float fisheyeVal ) {
+        this.position=pos;
+        lookAt.add(position.scalarMult(-1));
+        lookAt.normalize();
+        this.lookAt=lookAt;
+        upVec.normalize();
+        this.upVector=upVec;
+        this.screenDistance=distance;
+        this.screenWidth=width;
+        this.fisheye=isfisheye;
+        this.fisheyeTransVal=fisheyeVal;
     }
-    public void setcamPosition(Vector camPos) {
-
-        this.position=camPos;
-
-    }
-    public void SetCamScreenDistance(float camScreenDistance) {
-        this.screenDistance=camScreenDistance;
-
-    }
-    public void SetCamScreenWidth(float camScreenWidth) {
-        this.screenWidth=camScreenWidth;
-
-    }
-    public void setCamLookAtDirection(Vector camLookAt) {
-        camLookAt.normalize();
-        this.lookAt=camLookAt;
-
-    }
-    public void SetCamUpVector(Vector upVector) {
-        upVector.normalize();
-        this.upVector=upVector;
-
-    }
-
 }

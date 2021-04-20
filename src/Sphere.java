@@ -1,60 +1,53 @@
-public class Sphere implements Primitive{
-	Vector center;
-	float radius;
+public class Sphere implements Surface{
+	Vector centerPos;
+	double radius;
 	int materialIndex;
-	public Sphere() {};
 
-	public void setCenter(String x, String y, String z) {
 
-		this.center = new Vector(Double.parseDouble(x),Double.parseDouble(y),Double.parseDouble(z));
+	public Sphere(Vector center,double radiusVal,int material) {
+		this.centerPos = center;
+		this.radius=radiusVal;
+		this.materialIndex=material;
 	}
 
-	public void setRadius(String radius) {
-		this.radius= Float.parseFloat(radius);
-	}
-
-	public void setMaterial(String material) {
-		this.materialIndex=Integer.parseInt(material);
-	}
-
-	@Override
-	public double intersecte(Ray ray)  {
-		Vector L= this.center.add((ray.basePoint).scalarMult(-1));
-		double Tca = L.dotProduct(ray.directionVector);
-		if(Tca <0) {
+	public double intersect(Ray ray)  {
+		Vector l= this.centerPos.add((ray.p0).scalarMult(-1));
+		double t_ca = l.dotProduct(ray.v);
+		if(t_ca <0) {
 			return 0;
 		}
-		double Dsqure = (L.dotProduct(L)) - (Tca * Tca);
-		if(Dsqure > (this.radius * this.radius)) {
+		double d_2 = (l.dotProduct(l)) - (t_ca * t_ca);
+		double r_2=this.radius * this.radius;
+		if(d_2 > r_2) {
 			return 0;
 		}
-		double Thc = Math.sqrt((this.radius *this.radius) - Dsqure);
-		double t1 =Tca -Thc;
-		double t2 =Tca + Thc;
-		if(t1 >t2) {
-
-			double temp = t1;
-			t1 =t2;
-			t2=temp;
+		double t_hc = Math.sqrt(r_2 - d_2);
+		double t1 =t_ca - t_hc;
+		double t2 =t_ca + t_hc;
+		if (t1<0 && t2<0){
+			return 0;
 		}
-
-		if (t1<0) {
-			t1=t2;
-			if(t1<0) {
-				return 0;
+		double min_t=Math.min(t1,t2);
+		if (min_t<0){
+			if(min_t==t1){
+				return t2;
+			}
+			else{
+				return t1;
 			}
 		}
-		return t1;
+		return min_t;
 	}
 
-	@Override
-	public Vector findNormal(Vector intersectionPoint) {
-		Vector normal = intersectionPoint.add(this.center.scalarMult(-1));
+
+	public Vector getNormal(Vector intersection) {
+		Vector normal = intersection.add(this.centerPos.scalarMult(-1)); /// N = P0-P (P=looAt)
 		normal.normalize();
 		return normal;
 	}
-	@Override
-	public int getMterialIndex() {
+
+	public int getMaterialIndex() {
 		return this.materialIndex;
 	}
+
 }
