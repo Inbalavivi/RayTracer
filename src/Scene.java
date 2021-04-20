@@ -19,8 +19,7 @@ public class Scene {
     }
     public Vector color(Surface firstSurface,double min_t, Ray ray, int recDepth) {
         if (recDepth == 0) {
-            Vector col = new Vector(this.settings.backgroundCol.x, this.settings.backgroundCol.y, this.settings.backgroundCol.z);
-            return col;
+            return  new Vector(this.settings.backgroundCol.x, this.settings.backgroundCol.y, this.settings.backgroundCol.z);
         }
         Vector intersection = ray.p0.add(ray.v.scalarMult(min_t)); /// ?
         Vector N = firstSurface.getNormal(intersection);
@@ -75,10 +74,16 @@ public class Scene {
 
     public Vector ReflectionColor(Ray ray, Vector normal, Vector IntersectionP, Material mat, int recDepth) {
         Vector color;
+        double min_t;
+        Surface firstSurface;
         double epsilon = 0.005;
         Vector R = reflectVector( ray, normal);
         Ray reflectionRay = new Ray(IntersectionP.add(R.scalarMult(epsilon)), R);
-        Intersection hit = getIntersction(reflectionRay, this.surfaces);
+
+        Object[] intersection = Scene.getIntersction(reflectionRay,this.surfaces);
+        min_t = (double) intersection[0];
+        firstSurface = (Surface)intersection[1];
+
         if (min_t == Double.MAX_VALUE) {
             color=this.settings.backgroundCol.vecsMult(mat.reflection);
 
@@ -91,11 +96,25 @@ public class Scene {
         return color;
     }
 
+
+
+//    double min_t;
+//    Surface firstSurface;
+//    Object[] intersection = Scene.getIntersction(transRay, newSurfaces);
+//    min_t = (double) intersection[0];
+//    firstSurface = (Surface)intersection[1];
+
     public Vector TransparencyColors(Material mat, Vector N, Ray ray, Vector intersectionPoint, int recDepth) {
-        Vector col=null;
+        Vector col;
+        double min_t;
+        Surface firstSurface;
         double epsilon = 0.005;
         Ray transRay = new Ray(intersectionPoint.add(ray.v.scalarMult(epsilon)), ray.v);
-        Intersection transHit = getIntersction(transRay, newSurfaces);
+        Object[] intersection = Scene.getIntersction(transRay, newSurfaces);
+        min_t = (double) intersection[0];
+        firstSurface = (Surface)intersection[1];
+
+
         this.newSurfaces.remove(firstSurface);
         if (min_t != Double.MAX_VALUE) {
             Vector tempCol = color(firstSurface,min_t, transRay, recDepth - 1);
@@ -144,19 +163,26 @@ public class Scene {
         }
         return 0;
     }
-    public static Intersection getIntersction(Ray ray, List<Surface> Surfaces) {
+//    Object[] arr = new Object[6];
+//
+//    arr[0] = new String("First Pair");
+//    arr[1] = new Integer(1);
+
+    public static Object[] getIntersction(Ray ray, List<Surface> Surfaces) { /// return [min_t, firstSurface]
         double t;
         double min_t = Double.MAX_VALUE;
         Surface firstSurface = null;
+        Object[] intersection = new Object[2];
         for (Surface s : Surfaces) {
             t = s.intersect(ray);
             if (t < min_t && t > 0) {
                 firstSurface = s;
                 min_t = t;
             }
-
         }
-        Intersection intersection = new Intersection(min_t, firstSurface);
+        intersection[0] = min_t;
+        intersection[1] = firstSurface;
+        //Intersection intersection = new Intersection(min_t, firstSurface);
         return intersection;
     }
 

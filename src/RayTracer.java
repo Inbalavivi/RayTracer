@@ -202,10 +202,15 @@ public class RayTracer {
 				Vector ssP = P;
 				double heightOffset = 0;
 				double widthOffset = 0;
+				double min_t;
+				Surface firstSurface;
 				ssP = (P.add(V_y.scalarMult(heightOffset))).add(V_x.scalarMult(widthOffset));
 				Ray ray = new Ray(camera.position, ssP.add(camera.position.scalarMult(-1)));
 				ray.v.normalize();
-				Intersection hit = Scene.getIntersction(ray, surfaces);
+
+				Object[] intersection = Scene.getIntersction(ray, surfaces);
+				min_t = (double) intersection[0];
+				firstSurface = (Surface)intersection[1];
 				if (min_t == Double.MAX_VALUE) {
 					finalcolor=finalcolor.add((set.backgroundCol));
 				} else {
