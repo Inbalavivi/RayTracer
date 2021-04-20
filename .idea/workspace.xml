@@ -2,29 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0ab0e3f8-bfe4-466e-ade3-91de793e457a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Camera.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Primitive.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Settings.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/RayTracer.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Box.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Camera.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/GeneralSettings.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Intersection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Intersection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Light.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Light.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Material.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Material.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Plane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Plane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Ray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ray.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/RayTracer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RayTracer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scene.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Sphere.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Sphere.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Surface.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/RayTracing/Vector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Vector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pics/pool.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
