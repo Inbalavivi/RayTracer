@@ -17,19 +17,19 @@ public class Scene {
         this.materials = materials;
         this.newSurfaces = newSurfaces;
     }
-    public Vector color(Intersection hit, Ray ray, int recDepth) {
+    public Vector color(Surface firstSurface,double min_t, Ray ray, int recDepth) {
         if (recDepth == 0) {
             Vector col = new Vector(this.settings.backgroundCol.x, this.settings.backgroundCol.y, this.settings.backgroundCol.z);
             return col;
         }
-        Vector intersection = ray.p0.add(ray.v.scalarMult(hit.min_t)); /// ?
-        Vector N = hit.firstSurface.getNormal(intersection);
+        Vector intersection = ray.p0.add(ray.v.scalarMult(min_t)); /// ?
+        Vector N = firstSurface.getNormal(intersection);
         if (N.dotProduct(ray.v) > 0) {
             N = N.scalarMult(-1);
         }
         N.normalize();
         Vector col = new Vector(0,0,0);
-        Material mat = materials.get(hit.firstSurface.getMaterialIndex() - 1);
+        Material mat = materials.get(firstSurface.getMaterialIndex() - 1);
 
         for (Light light : this.lights) {
             Vector L = light.position.add(intersection.scalarMult(-1));
@@ -78,12 +78,12 @@ public class Scene {
         double epsilon = 0.005;
         Vector R = reflectVector( ray, normal);
         Ray reflectionRay = new Ray(IntersectionP.add(R.scalarMult(epsilon)), R);
-        Intersection hit = Intersection.getIntersction(reflectionRay, this.surfaces);
-        if (hit.min_t == Double.MAX_VALUE) {
+        Intersection hit = getIntersction(reflectionRay, this.surfaces);
+        if (min_t == Double.MAX_VALUE) {
             color=this.settings.backgroundCol.vecsMult(mat.reflection);
 
         } else {
-            Vector tempCol = color(hit, reflectionRay, recDepth - 1);
+            Vector tempCol = color(firstSurface,min_t, reflectionRay, recDepth - 1);
             color=tempCol.vecsMult(mat.reflection);
 
         }
@@ -95,10 +95,10 @@ public class Scene {
         Vector col=null;
         double epsilon = 0.005;
         Ray transRay = new Ray(intersectionPoint.add(ray.v.scalarMult(epsilon)), ray.v);
-        Intersection transHit = Intersection.getIntersction(transRay, newSurfaces);
-        this.newSurfaces.remove(transHit.firstSurface);
-        if (transHit.min_t != Double.MAX_VALUE) {
-            Vector tempCol = color(transHit, transRay, recDepth - 1);
+        Intersection transHit = getIntersction(transRay, newSurfaces);
+        this.newSurfaces.remove(firstSurface);
+        if (min_t != Double.MAX_VALUE) {
+            Vector tempCol = color(firstSurface,min_t, transRay, recDepth - 1);
             col =tempCol;
 
         } else {
@@ -139,8 +139,34 @@ public class Scene {
         double directionMagnitud = Math.sqrt(pointDirection.dotProduct(pointDirection)); // ||pointDirction||
         pointDirection.normalize();
         Ray lightRay = new Ray(intersection.add(pointDirection.scalarMult(0.001)), pointDirection);
-        if(Intersection.isIntersect(lightRay, this, directionMagnitud)==0){
+        if(isIntersect(lightRay, this, directionMagnitud)==0){
             return 1;
+        }
+        return 0;
+    }
+    public static Intersection getIntersction(Ray ray, List<Surface> Surfaces) {
+        double t;
+        double min_t = Double.MAX_VALUE;
+        Surface firstSurface = null;
+        for (Surface s : Surfaces) {
+            t = s.intersect(ray);
+            if (t < min_t && t > 0) {
+                firstSurface = s;
+                min_t = t;
+            }
+
+        }
+        Intersection intersection = new Intersection(min_t, firstSurface);
+        return intersection;
+    }
+
+    public static int isIntersect(Ray ray, Scene scene, double Magnitud) {
+        double t;
+        for (Surface s : scene.surfaces) {
+            t = s.intersect(ray);
+            if (t < Magnitud && t > 0) {
+                return 1;
+            }
         }
         return 0;
     }

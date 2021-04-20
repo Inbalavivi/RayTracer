@@ -205,13 +205,13 @@ public class RayTracer {
 				ssP = (P.add(V_y.scalarMult(heightOffset))).add(V_x.scalarMult(widthOffset));
 				Ray ray = new Ray(camera.position, ssP.add(camera.position.scalarMult(-1)));
 				ray.v.normalize();
-				Intersection hit = Intersection.getIntersction(ray, surfaces);
-				if (hit.min_t == Double.MAX_VALUE) {
+				Intersection hit = Scene.getIntersction(ray, surfaces);
+				if (min_t == Double.MAX_VALUE) {
 					finalcolor=finalcolor.add((set.backgroundCol));
 				} else {
 					newSurfaces = new ArrayList<Surface>(surfaces);
-					newSurfaces.remove(hit.firstSurface);
-					Vector col = scene.color(hit, ray, set.maxNumRec);
+					newSurfaces.remove(firstSurface);
+					Vector col = scene.color(firstSurface,min_t, ray, set.maxNumRec);
 					finalcolor=finalcolor.add(col);
 				}
 				// Put your ray tracing code here!
