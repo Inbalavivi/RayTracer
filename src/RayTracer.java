@@ -73,9 +73,6 @@ public class RayTracer {
 		String line = null;
 		int lineNum = 0;
 		System.out.println("Started parsing scene file " + sceneFileName);
-
-
-
 		while ((line = r.readLine()) != null)
 		{
 			line = line.trim();
@@ -168,13 +165,11 @@ public class RayTracer {
 		long startTime = System.currentTimeMillis();
 		// Create a byte array to hold the pixel data:
 		byte[] rgbData = new byte[this.imageWidth * this.imageHeight * 3];
-
-		Vector vec = camera.lookAt.crossProduct(camera.upVector);
-		vec.normalize();
-		camera.upVector = camera.lookAt.crossProduct(vec);
-		camera.upVector.normalize();
-		Vector v_x = new Vector(vec.x, vec.y, vec.z);
+		//define axis
+		Vector v_x = camera.lookAt.crossProduct(camera.upVector);
 		v_x.normalize();
+		camera.upVector = camera.lookAt.crossProduct(v_x);
+		camera.upVector.normalize();
 		Vector v_y = new Vector(camera.upVector.x, camera.upVector.y, camera.upVector.z);
 		v_y.normalize();
 		Vector v_z = new Vector(camera.lookAt.x, camera.lookAt.y, camera.lookAt.z);

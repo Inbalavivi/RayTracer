@@ -53,7 +53,7 @@ public class Vector {
 		return vec;
 	}
 
-	public void checkRange(){
+	public void checkBound(){
 		if (this.x > 1) {
 			this.x = 1;
 		}
