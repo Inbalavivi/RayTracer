@@ -9,7 +9,7 @@ public class Camera {
 
     public Camera(Vector pos,Vector lookAt,Vector upVec,float distance,float width,boolean isFishEye, float fisheyeVal ) {
         this.position=pos;
-        lookAt.add(position.scalarMult(-1));
+        lookAt=lookAt.add(position.scalarMult(-1));
         lookAt.normalize();
         this.lookAt=lookAt;
         upVec.normalize();

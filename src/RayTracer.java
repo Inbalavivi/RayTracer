@@ -171,9 +171,9 @@ public class RayTracer {
 		// Create a byte array to hold the pixel data:
 		byte[] rgbData = new byte[this.imageWidth * this.imageHeight * 3];
 		//define axis
-		Vector v_x = camera.lookAt.crossProduct(camera.upVector);
+		Vector v_x = camera.upVector.crossProduct(camera.lookAt);
 		v_x.normalize();
-		camera.upVector = camera.lookAt.crossProduct(v_x);
+		camera.upVector = v_x.crossProduct(camera.lookAt);
 		camera.upVector.normalize();
 		Vector v_y = new Vector(camera.upVector.x, camera.upVector.y, camera.upVector.z);
 		v_y.normalize();
