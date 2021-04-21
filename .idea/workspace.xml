@@ -3,14 +3,16 @@
   <component name="ChangeListManager">
     <list default="true" id="0ab0e3f8-bfe4-466e-ade3-91de793e457a" name="Default Changelist" comment="fix intersection">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Transparency.png" beforeDir="false" afterPath="$PROJECT_DIR$/Transparency.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Camera.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Camera.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Transparency.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer$RayTracerException.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer$RayTracerException.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Scene.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Scene.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pool.png" beforeDir="false" afterPath="$PROJECT_DIR$/pool.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/room1.png" beforeDir="false" afterPath="$PROJECT_DIR$/room1.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spheres.png" beforeDir="false" afterPath="$PROJECT_DIR$/spheres.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Camera.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/RayTracer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RayTracer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scene.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trans.png" beforeDir="false" afterPath="$PROJECT_DIR$/trans.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,7 +61,7 @@
       <option name="ALTERNATIVE_JRE_PATH" value="$PROJECT_DIR$/../.jdks/openjdk-16" />
       <option name="MAIN_CLASS_NAME" value="RayTracer" />
       <module name="Graphics_RayTracing" />
-      <option name="PROGRAM_PARAMETERS" value="Transparency.txt trans.png " />
+      <option name="PROGRAM_PARAMETERS" value="Pool.txt pool.png " />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -117,6 +119,11 @@
           <url>file://$PROJECT_DIR$/src/Camera.java</url>
           <line>10</line>
           <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/RayTracer.java</url>
+          <line>199</line>
+          <option name="timeStamp" value="31" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

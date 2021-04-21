@@ -193,22 +193,18 @@ public class RayTracer {
 				Vector pixelColor = new Vector(0.0, 0.0, 0.0);
 				double heightOffset = 0;
 				double widthOffset = 0;
-				double min_t;
-				Surface firstSurface;
 				P = (P.add(v_y.scalarMult(heightOffset))).add(v_x.scalarMult(widthOffset));
 				// Ray = E + t*(P - E )
 				Ray ray = new Ray(camera.position, P.add(camera.position.scalarMult(-1)));
 
-				Object[] intersection = Scene.getIntersection(ray, surfaces);
-				min_t = (double) intersection[0];
-				firstSurface = (Surface)intersection[1];
+				Intersection intersection = Intersection.getIntersection(ray, surfaces);
 
-				if (min_t == Double.MAX_VALUE) { // default min_t == infinity  ==> there is no intersection
+				if (intersection.min_t == Double.MAX_VALUE) { // default min_t == infinity  ==> there is no intersection
 					pixelColor = pixelColor.add((set.backgroundCol));
 				} else { // there is intersection
 					newSurfaces = new ArrayList<Surface>(surfaces);
-					newSurfaces.remove(firstSurface);
-					Vector col = scene.getColor(firstSurface,min_t, ray, set.maxNumRec);
+					newSurfaces.remove(intersection.firstSurface);
+					Vector col = scene.getColor(intersection.firstSurface,intersection.min_t, ray, set.maxNumRec);
 					pixelColor = pixelColor.add(col);
 				}
 				// Put your ray tracing code here!

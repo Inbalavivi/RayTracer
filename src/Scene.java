@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -94,9 +95,10 @@ public class Scene {
         Surface firstSurface;
         Vector R = reflectVector( ray, normal);
         Ray reflectionRay = new Ray(IntersectionP.add(R.scalarMult(epsilon)), R);
-        Object[] intersection = getIntersection(reflectionRay,this.surfaces);
-        min_t = (double) intersection[0];
-        firstSurface = (Surface)intersection[1];
+        Intersection intersection = Intersection.getIntersection(reflectionRay,this.surfaces);
+
+        min_t = intersection.min_t;
+        firstSurface = intersection.firstSurface;
 
         if (min_t == Double.MAX_VALUE) {
             color=this.settings.backgroundCol.vecsMult(mat.reflection);
@@ -115,9 +117,9 @@ public class Scene {
         double min_t;
         Surface firstSurface;
         Ray transRay = new Ray(intersectionPoint.add(ray.v.scalarMult(epsilon)), ray.v);
-        Object[] intersection = Scene.getIntersection(transRay, newSurfaces);
-        min_t = (double) intersection[0];
-        firstSurface = (Surface)intersection[1];
+        Intersection intersection = Intersection.getIntersection(transRay, newSurfaces);
+        min_t = intersection.min_t;
+        firstSurface = intersection.firstSurface;
         this.newSurfaces.remove(firstSurface);
         if (min_t == Double.MAX_VALUE) {
             col =this.settings.backgroundCol;
@@ -160,40 +162,12 @@ public class Scene {
         double directionMagnitude = Math.sqrt(pointDirection.dotProduct(pointDirection)); // ||pointDirection||
         pointDirection.normalize();
         Ray lightRay = new Ray(intersection.add(pointDirection.scalarMult(epsilon)), pointDirection);
-        if(checkIfIntersect(lightRay, this, directionMagnitude)==0){
+        if(Intersection.checkIfIntersect(lightRay, this, directionMagnitude)==0){
             return 1;
         }
         return 0;
     }
 
-    public static Object[] getIntersection(Ray ray, List<Surface> Surfaces) { /// return [min_t, firstSurface]
-        double min_t = Double.MAX_VALUE; // min_t = infinity
-        Surface firstSurface = null;
-        Object[] intersection = new Object[2];
-        double t;
-
-        for (Surface s : Surfaces) {
-            t = s.intersect(ray);
-            if (t < min_t && t > 0) {
-                firstSurface = s;
-                min_t = t;
-            }
-        }
-        intersection[0] = min_t;
-        intersection[1] = firstSurface;
-        return intersection;
-    }
-
-    public static int checkIfIntersect(Ray ray, Scene scene, double Magnitude) {
-        double t;
-        for (Surface s : scene.surfaces) {
-            t = s.intersect(ray);
-            if (t < Magnitude && t > 0) {
-                return 1;
-            }
-        }
-        return 0;
-    }
 
 }
 
