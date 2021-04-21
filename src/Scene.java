@@ -69,14 +69,14 @@ public class Scene {
         }
         Vector reflectionColor = new Vector(0,0,0);
         if (mat.reflection.x > 0 || mat.reflection.y > 0 || mat.reflection.z > 0) {
-            reflectionColor = ReflectionColor(ray, N, intersection, mat, recDepth);
+            reflectionColor = ReflectionColor(ray, N, intersection, mat, recDepth-1);
         }
-        List<Intersection> check =new ArrayList<Intersection>();
-        check= Intersection.getAllIntersections(ray,surfaces);
+        //List<Intersection> check =new ArrayList<Intersection>();
+        //check= Intersection.getAllIntersections(ray,surfaces);
         Vector transfCol = new Vector(0,0,0);
 
         if (mat.transparency > 0) {
-            transfCol = TransparencyColors( ray, intersection, recDepth);
+            transfCol = TransparencyColors( ray, intersection, recDepth-1);
         }
         //output color = (background color) * transparency + (diffuse + specular) * (1 - transparency) + (reflection color)
         col=(transfCol.scalarMult(mat.transparency)).add((col.scalarMult(1 - mat.transparency))).add(reflectionColor);   /// formula
@@ -114,24 +114,48 @@ public class Scene {
     }
 
     public Vector TransparencyColors( Ray ray, Vector intersectionPoint, int recDepth) {
-        Vector col=new Vector(0,0,0);
-        double min_t;
-        Surface firstSurface;
+        Vector col = new Vector(0,0,0);
+        double t;
+        Surface surface;
         Ray transRay = new Ray(intersectionPoint.add(ray.v.scalarMult(epsilon)), ray.v);
-        Intersection intersection = Intersection.getMinIntersection(transRay, newSurfaces);
-        min_t = intersection.min_t;
-        firstSurface = intersection.firstSurface;
-        this.newSurfaces.remove(firstSurface);
-        if (min_t == Double.MAX_VALUE) {
-            col =this.settings.backgroundCol;
+        List<Intersection> inters_list = Intersection.getAllIntersections(transRay, surfaces);
 
-        } else {
-            col=col.add(getColor(firstSurface,min_t, transRay, recDepth - 1));
+//        Material mat = materials.get(i.firstSurface.getMatIndex() - 1);
+//        if (mat.transparency>0){
+
+            for (Intersection inter : inters_list ){
+            t = inter.min_t;
+            surface = inter.firstSurface;
+            if (t == Double.MAX_VALUE) {
+                col =this.settings.backgroundCol;
+            } else {
+                col = col.add(getColor(surface, t, transRay, recDepth - 1));
+            }
+            //this.newSurfaces.remove(surface);
         }
         col.checkBound();
         return col;
     }
 
+//    public Vector TransparencyColors( Ray ray, Vector intersectionPoint, int recDepth) {
+//        Vector col=new Vector(0,0,0);
+//        double min_t;
+//        Surface firstSurface;
+//        Ray transRay = new Ray(intersectionPoint.add(ray.v.scalarMult(epsilon)), ray.v);
+//        List<Intersection> intersection = Intersection.getAllIntersections(transRay, newSurfaces);
+//
+//        min_t = intersection.min_t;
+//        firstSurface = intersection.firstSurface;
+//        this.newSurfaces.remove(firstSurface);
+//        if (min_t == Double.MAX_VALUE) {
+//            col =this.settings.backgroundCol;
+//
+//        } else {
+//            col=col.add(getColor(firstSurface, min_t, transRay, recDepth - 1));
+//        }
+//        col.checkBound();
+//        return col;
+//    }
     public double softShadow(Light light, Vector planeNormal, Vector intersectionPoint) {
         Plane plane = new Plane(planeNormal,planeNormal.dotProduct(light.position),-1);
         Vector uOnPlane = plane.findVec(light.position); //Specifying the Viewing Coordinates system

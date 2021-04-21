@@ -9,7 +9,6 @@ import java.util.List;
             this.min_t = min_t;
         }
 
-
         public static Intersection getMinIntersection(Ray ray, List<Surface> Surfaces) { /// return [min_t, firstSurface]
             double min_t = Double.MAX_VALUE; // min_t = infinity
             Surface firstSurface = null;
@@ -35,7 +34,7 @@ import java.util.List;
         }
 
         public static List<Intersection> getAllIntersections(Ray ray, List<Surface> Surfaces) { /// return [min_t, firstSurface]
-            //double min_t = Double.MAX_VALUE; // min_t = infinity
+            double min_t = Double.MAX_VALUE; // min_t = infinity
             List<Intersection> allIntersections = new ArrayList<>();
             Surface firstSurface = null;
             //Object[] intersection = new Object[2];
