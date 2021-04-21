@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0ab0e3f8-bfe4-466e-ade3-91de793e457a" name="Default Changelist" comment="fix intersection">
+    <list default="true" id="0ab0e3f8-bfe4-466e-ade3-91de793e457a" name="Default Changelist" comment="fix transparency">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Intersection.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Intersection.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Scene.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Scene.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Intersection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Intersection.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scene.java" afterDir="false" />
@@ -56,7 +55,7 @@
       <option name="ALTERNATIVE_JRE_PATH" value="$PROJECT_DIR$/../.jdks/openjdk-16" />
       <option name="MAIN_CLASS_NAME" value="RayTracer" />
       <module name="Graphics_RayTracing" />
-      <option name="PROGRAM_PARAMETERS" value="Transparency.txt tr2.png " />
+      <option name="PROGRAM_PARAMETERS" value="pool.txt pollllll.png " />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -77,7 +76,13 @@
       <option name="presentableId" value="LOCAL‎00001" />
       <updated>1618932214700</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL‎00002" summary="fix transparency">
+      <created>1619011766752</created>
+      <option name="number" value="LOCAL‎00002" />
+      <option name="presentableId" value="LOCAL‎00002" />
+      <updated>1619011766752</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -95,7 +100,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="render scene changes" />
     <MESSAGE value="fix intersection" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix intersection" />
+    <MESSAGE value="fix transparency" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix transparency" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

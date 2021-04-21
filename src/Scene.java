@@ -120,21 +120,21 @@ public class Scene {
         Ray transRay = new Ray(intersectionPoint.add(ray.v.scalarMult(epsilon)), ray.v);
         List<Intersection> inters_list = Intersection.getAllIntersections(transRay, surfaces);
 
-//        Material mat = materials.get(i.firstSurface.getMatIndex() - 1);
-//        if (mat.transparency>0){
-
             for (Intersection inter : inters_list ){
             t = inter.min_t;
             surface = inter.firstSurface;
             if (t == Double.MAX_VALUE) {
                 col =this.settings.backgroundCol;
             } else {
-                col = col.add(getColor(surface, t, transRay, recDepth - 1));
+                Material mat = materials.get(inter.firstSurface.getMatIndex() - 1);
+                col = col.add(getColor(surface, t, transRay, recDepth - 1).scalarMult(1-mat.transparency));
             }
             //this.newSurfaces.remove(surface);
         }
         col.checkBound();
-        return col;
+        Vector one  = new Vector(1,1, 1);
+        return (col.scalarMult(-1)).add(one);
+        //return  col;
     }
 
 //    public Vector TransparencyColors( Ray ray, Vector intersectionPoint, int recDepth) {

@@ -45,7 +45,7 @@ import java.util.List;
                     //firstSurface = s;
                     //min_t = t;
 
-                    Intersection i=new Intersection(t,s);
+                    Intersection i = new Intersection(t,s);
                     allIntersections.add(i);
                 }
             }
