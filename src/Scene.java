@@ -151,11 +151,11 @@ public class Scene {
         return sum / Math.pow(this.settings.numShadowRays , 2);
     }
 
-    public int shootRay( Vector corner, Vector v, Vector u, int i, int j, Vector intersection) {
+    public int shootRay( Vector edge, Vector v, Vector u, int i, int j, Vector intersection) {
         Random rand = new Random();
         double x = rand.nextDouble();
         double y = rand.nextDouble();
-        Vector point = corner.add(v.scalarMult(i + x).add(u.scalarMult(j + y)));
+        Vector point = edge.add(v.scalarMult(i + x).add(u.scalarMult(j + y)));
         Vector pointDirection = point.add(intersection.scalarMult(-1));
         double directionMagnitude = Math.sqrt(pointDirection.dotProduct(pointDirection)); // ||pointDirection||
         pointDirection.normalize();

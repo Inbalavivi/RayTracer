@@ -94,9 +94,14 @@ public class RayTracer {
 					Vector upVec = new Vector(Double.parseDouble(params[6]),Double.parseDouble(params[7]),Double.parseDouble(params[8]));
 					float distance=Float.parseFloat(params[9]);
 					float width=Float.parseFloat(params[10]);
-					boolean fisheye=Boolean.parseBoolean(params[11]);
-					float fisheyeTransVal=Float.parseFloat(params[12]);
-					camera =new Camera(position,lookAt,upVec,distance,width,fisheye,fisheyeTransVal);
+					if (params.length>11) {
+						boolean fisheye = Boolean.parseBoolean(params[11]);
+						float fisheyeTransVal = Float.parseFloat(params[12]);
+						camera =new Camera(position,lookAt,upVec,distance,width,fisheye,fisheyeTransVal);
+					}
+					else {
+						camera = new Camera(position, lookAt, upVec, distance, width, false, (float)0.5);
+					}
 					System.out.println(String.format("Parsed camera parameters (line %d)", lineNum));
 
 				} else if (code.equals("set")) {
@@ -178,7 +183,6 @@ public class RayTracer {
 		// The main loop
 		// P = E + v_z*f
 		Vector P = (camera.position).add(v_z.scalarMult(camera.screenDistance));
-		//Vector P = (v_z.scalarMult(camera.screenDistance)).add(camera.position);
 		double screenHeight = (imageHeight * camera.screenWidth)/ imageWidth ;
 		// p0 = P - width*v_x - height*v_y
 		Vector P0 = (v_x.scalarMult(camera.screenWidth * (-1) / 2)).add( v_y.scalarMult(screenHeight * (-1) / 2)).add(P);

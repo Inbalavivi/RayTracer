@@ -4,8 +4,8 @@ public class Camera {
     Vector upVector;
     float screenDistance;
     float screenWidth;
-    boolean fishEye = false;
-    float fishEyeTransVal=(float)0.5;
+    boolean fishEye;
+    float fishEyeTransVal;
 
     public Camera(Vector pos,Vector lookAt,Vector upVec,float distance,float width,boolean isFishEye, float fisheyeVal ) {
         this.position=pos;

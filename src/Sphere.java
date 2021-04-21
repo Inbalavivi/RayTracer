@@ -26,6 +26,7 @@ public class Sphere implements Surface{
 		if (t1<0 && t2<0){
 			return 0;
 		}
+
 		double min_t = Math.min(t1,t2);
 		if (min_t < 0){
 			if(min_t == t1){
