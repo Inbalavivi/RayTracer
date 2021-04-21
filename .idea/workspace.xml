@@ -3,15 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="0ab0e3f8-bfe4-466e-ade3-91de793e457a" name="Default Changelist" comment="fix intersection">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Intersection.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Intersection.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Scene.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Scene.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Intersection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Intersection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Plane.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Plane.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/RayTracer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RayTracer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scene.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Sphere.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Sphere.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Surface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Surface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/trans.png" beforeDir="false" afterPath="$PROJECT_DIR$/trans.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

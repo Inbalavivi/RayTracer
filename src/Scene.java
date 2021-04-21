@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -70,12 +71,13 @@ public class Scene {
         if (mat.reflection.x > 0 || mat.reflection.y > 0 || mat.reflection.z > 0) {
             reflectionColor = ReflectionColor(ray, N, intersection, mat, recDepth);
         }
-
+        List<Intersection> check =new ArrayList<Intersection>();
+        check= Intersection.getAllIntersections(ray,surfaces);
         Vector transfCol = new Vector(0,0,0);
+
         if (mat.transparency > 0) {
             transfCol = TransparencyColors( ray, intersection, recDepth);
         }
-
         //output color = (background color) * transparency + (diffuse + specular) * (1 - transparency) + (reflection color)
         col=(transfCol.scalarMult(mat.transparency)).add((col.scalarMult(1 - mat.transparency))).add(reflectionColor);   /// formula
         col.checkBound();
@@ -112,7 +114,7 @@ public class Scene {
     }
 
     public Vector TransparencyColors( Ray ray, Vector intersectionPoint, int recDepth) {
-        Vector col;
+        Vector col=new Vector(0,0,0);
         double min_t;
         Surface firstSurface;
         Ray transRay = new Ray(intersectionPoint.add(ray.v.scalarMult(epsilon)), ray.v);
@@ -124,7 +126,7 @@ public class Scene {
             col =this.settings.backgroundCol;
 
         } else {
-            col = getColor(firstSurface,min_t, transRay, recDepth - 1);
+            col=col.add(getColor(firstSurface,min_t, transRay, recDepth - 1));
         }
         col.checkBound();
         return col;
