@@ -197,7 +197,7 @@ public class RayTracer {
 				// Ray = E + t*(P - E )
 				Ray ray = new Ray(camera.position, P.add(camera.position.scalarMult(-1)));
 
-				Intersection intersection = Intersection.getIntersection(ray, surfaces);
+				Intersection intersection = Intersection.getMinIntersection(ray, surfaces);
 
 				if (intersection.min_t == Double.MAX_VALUE) { // default min_t == infinity  ==> there is no intersection
 					pixelColor = pixelColor.add((set.backgroundCol));

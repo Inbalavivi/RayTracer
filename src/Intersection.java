@@ -9,7 +9,8 @@ import java.util.List;
             this.min_t = min_t;
         }
 
-        public static Intersection getIntersection(Ray ray, List<Surface> Surfaces) { /// return [min_t, firstSurface]
+
+        public static Intersection getMinIntersection(Ray ray, List<Surface> Surfaces) { /// return [min_t, firstSurface]
             double min_t = Double.MAX_VALUE; // min_t = infinity
             Surface firstSurface = null;
             double t;
@@ -21,10 +22,19 @@ import java.util.List;
                 }
             }
             Intersection intersection = new Intersection(min_t,firstSurface);
+//            List<Intersection> check =new ArrayList<Intersection>();
+//            check= getAllIntersections(ray,Surfaces);
+//            if (check.size()>1){
+//                for (Intersection i :check){
+//                    System.out.print("list:");
+//                    System.out.print(i.min_t);
+//                }
+//
+//            }
             return intersection;
         }
 
-        public List<Intersection> getAllIntersections(Ray ray, List<Surface> Surfaces) { /// return [min_t, firstSurface]
+        public static List<Intersection> getAllIntersections(Ray ray, List<Surface> Surfaces) { /// return [min_t, firstSurface]
             //double min_t = Double.MAX_VALUE; // min_t = infinity
             List<Intersection> allIntersections = new ArrayList<>();
             Surface firstSurface = null;
@@ -32,9 +42,10 @@ import java.util.List;
             double t;
             for (Surface s : Surfaces) {
                 t = s.intersect(ray);
-                if ( t > 0) {
+                if (t > 0) {
                     //firstSurface = s;
                     //min_t = t;
+
                     Intersection i=new Intersection(t,s);
                     allIntersections.add(i);
                 }

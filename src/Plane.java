@@ -18,4 +18,7 @@ public class Plane implements Surface {
 		Vector vec = new Vector(1,1, -1 * (this.offset + this.normal.x + this.normal.y) / this.normal.z);
 		return vec.add(point.scalarMult(-1));
 	}
+	public int getMatIndex(){
+		return this.materialIndex;
+	}
 }

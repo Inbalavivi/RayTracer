@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -95,7 +94,7 @@ public class Scene {
         Surface firstSurface;
         Vector R = reflectVector( ray, normal);
         Ray reflectionRay = new Ray(IntersectionP.add(R.scalarMult(epsilon)), R);
-        Intersection intersection = Intersection.getIntersection(reflectionRay,this.surfaces);
+        Intersection intersection = Intersection.getMinIntersection(reflectionRay,this.surfaces);
 
         min_t = intersection.min_t;
         firstSurface = intersection.firstSurface;
@@ -117,7 +116,7 @@ public class Scene {
         double min_t;
         Surface firstSurface;
         Ray transRay = new Ray(intersectionPoint.add(ray.v.scalarMult(epsilon)), ray.v);
-        Intersection intersection = Intersection.getIntersection(transRay, newSurfaces);
+        Intersection intersection = Intersection.getMinIntersection(transRay, newSurfaces);
         min_t = intersection.min_t;
         firstSurface = intersection.firstSurface;
         this.newSurfaces.remove(firstSurface);

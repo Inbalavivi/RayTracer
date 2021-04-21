@@ -38,4 +38,7 @@ public class Sphere implements Surface{
 		}
 		return min_t;
 	}
+	public int getMatIndex(){
+		return this.materialIndex;
+	}
 }
