@@ -222,6 +222,7 @@ public class RayTracer {
 						ray_direction.normalize();
 						Ray new_ray_for_Xip = new Ray(camera.position,ray_direction);
 						intersection = Intersection.getMinIntersection(new_ray_for_Xip, surfaces);
+						ray = new_ray_for_Xip;
 					}
 				}
 
