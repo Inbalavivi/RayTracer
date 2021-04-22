@@ -14,7 +14,7 @@ public class Camera {
         this.lookAt=lookAt;
         upVec.normalize();
         this.upVector=upVec;
-        this.screenDistance=distance;
+        this.screenDistance= (float) (distance);
         this.screenWidth=width;
         this.fishEye=isFishEye;
         this.fishEyeTransVal=fisheyeVal;

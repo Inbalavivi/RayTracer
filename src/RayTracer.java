@@ -128,12 +128,20 @@ public class RayTracer {
 					System.out.println(String.format("Parsed sphere (line %d)", lineNum));
 
 				} else if (code.equals("pln")) {
-					Vector normal=new Vector(Double.parseDouble(params[0]), Double.parseDouble(params[1]),Double.parseDouble(params[2]));
-					double offset=Double.parseDouble(params[3]);
-					int index=Integer.parseInt(params[4]);
+					Vector normal = new Vector(Double.parseDouble(params[0]), Double.parseDouble(params[1]),Double.parseDouble(params[2]));
+					double offset = Double.parseDouble(params[3]);
+					int index = Integer.parseInt(params[4]);
 					Plane plane = new Plane(normal,offset,index);
 					surfaces.add(plane);
 					System.out.println(String.format("Parsed plane (line %d)", lineNum));
+
+				} else if (code.equals("box")) {
+					Vector center = new Vector(Double.parseDouble(params[0]), Double.parseDouble(params[1]),Double.parseDouble(params[2]));
+					double edgeLen = Double.parseDouble(params[3]);
+					int materialIndex = Integer.parseInt(params[4]);
+					Box box = new Box(center,edgeLen,materialIndex);
+					surfaces.add(box);
+					System.out.println(String.format("Parsed box (line %d)", lineNum));
 
 				} else if (code.equals("lgt")) {
 					Vector LightPosition = new Vector(Double.parseDouble(params[0]), Double.parseDouble(params[1]),
@@ -197,6 +205,31 @@ public class RayTracer {
 				// Ray = E + t*(P - E )
 				Ray ray = new Ray(camera.position, P.add(camera.position.scalarMult(-1)));
 
+//				Vector black_color = new Vector(0.0,0.0,0);
+//				if ( camera.fishEye == true ){
+//					Vector X_if = ray.v.scalarMult(-1);
+//					double teta = fishEye.calculateTeta(camera.lookAt, X_if, camera);
+//					if (fishEye.checkTeta(teta) == true){
+//						Vector X_ip = fishEye.findXip(camera.lookAt, X_if, camera);
+//						ray.v = X_ip;  //Vec_X_ip;  the new pixel! now the ray will go trough X_ip instead of X_if
+//					}
+//				}
+				boolean isBlack = false;
+				Vector black_color = new Vector(0.0,0.0,0);
+				double teta = 0 ;
+				if ( camera.fishEye == true ){
+					Vector X_if = ray.p0;
+
+					teta = fishEye.calculateTeta(camera.lookAt, X_if, camera);
+					if (fishEye.checkTeta(teta) == true){
+						Vector X_ip = fishEye.findXip(camera.lookAt, X_if, camera);
+						ray.p0 = X_ip;  //Vec_X_ip;  the new pixel! now the ray will go trough X_ip instead of X_if
+					}
+					else{
+						isBlack = true;
+					}
+				}
+
 				Intersection intersection = Intersection.getMinIntersection(ray, surfaces);
 
 				if (intersection.min_t == Double.MAX_VALUE) { // default min_t == infinity  ==> there is no intersection
@@ -215,6 +248,18 @@ public class RayTracer {
 				//             blue component is in rgbData[(y * this.imageWidth + x) * 3 + 2]
 				//
 				// Each of the red, green and blue components should be a byte, i.e. 0-255
+
+
+//				if ( camera.fishEye == true ){
+//					Vector X_if = ray.v;
+//					double teta = fishEye.calculateTeta(camera.lookAt, X_if, camera);
+//					if (fishEye.checkTeta(teta) == false){
+//						pixelColor = black_color;
+//
+//					}
+//				}
+				//if (isBlack == true){pixelColor.x = 0;}
+
 				rgbData[(imageWidth *y +x) * 3]    = (byte) (pixelColor.x * 255 );
 				rgbData[(imageWidth *y +x) * 3 + 1] = (byte) (pixelColor.y * 255);
 				rgbData[(imageWidth *y +x)  * 3 + 2] = (byte) (pixelColor.z * 255);
@@ -279,3 +324,4 @@ public class RayTracer {
 
 
 }
+
