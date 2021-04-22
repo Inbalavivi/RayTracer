@@ -24,14 +24,13 @@ public class fishEye {
             teta = Math.asin((R*K)/camD)/K;
         }
         return teta;
-
     }
 
     public static int handleTeta(double teta) {
         double pai = Math.PI;
         if (teta == pai){ return 1;// Vector white_color = new Vector(1.0,1.0,1.0);
              }
-        else if (teta >= pai/2){ return 2;//Vector black_color = new Vector(0.0,0.0,0);
+        else if (teta > pai/2){ return 2;//Vector black_color = new Vector(0.0,0.0,0);
             }
         return 3;
     }
@@ -40,7 +39,7 @@ public class fishEye {
         double teta = calculateTeta(lookAt, X_if, camera);
         double f = camera.screenDistance;
        // double R  = calculateR(lookAt, X_if);  /// new
-        return Math.tan(teta)*f ;     /// new
+        return Math.tan(teta)*f ;
     }
 
     public static Vector findXip(Vector lookAt, Vector X_if, Camera camera) {
@@ -50,5 +49,4 @@ public class fishEye {
         Vector Vec_X_ip = centerOfScreen.add( ((X_if.add(centerOfScreen.scalarMult(-1))).scalarMult(1/r)).scalarMult(distance) );
         return Vec_X_ip;  // the new pixel! now the ray will go trough X_ip instead of X_if
     }
-
 }

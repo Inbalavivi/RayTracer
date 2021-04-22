@@ -225,10 +225,10 @@ public class RayTracer {
 					}
 				}
 
-
 				if (intersection.min_t == Double.MAX_VALUE) { // default min_t == infinity  ==> there is no intersection
 					pixelColor = pixelColor.add((set.backgroundCol));
-				} else { // there is intersection
+				}
+				else { // there is intersection
 					newSurfaces = new ArrayList<Surface>(surfaces);
 					newSurfaces.remove(intersection.firstSurface);
 					Vector col = scene.getColor(intersection.firstSurface,intersection.min_t, ray, set.maxNumRec);

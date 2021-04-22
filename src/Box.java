@@ -17,7 +17,6 @@ public class Box implements Surface {
         this.maxExtent = center.add(r_vec);
     }
 
-
     public double intersect(Ray ray)  {
           double tmin = (minExtent.x - ray.p0.x) / ray.v.x;
           double tmax = (maxExtent.x - ray.p0.x) / ray.v.x;
