@@ -6,7 +6,7 @@ import java.util.List;
 
         public Intersection(double min_t, Surface firstSurface) {
             this.firstSurface = firstSurface;
-            this.min_t = min_t;
+            this.min_t = min_t ;
         }
 
         public static Intersection getMinIntersection(Ray ray, List<Surface> Surfaces) { /// return [min_t, firstSurface]
