@@ -25,7 +25,7 @@ public class Scene {
         }
         Vector intersection = ray.p0.add(ray.v.scalarMult(min_t)); //p0 +tV
 
-        Vector normal = new Vector(0,0,0);
+        Vector normal;
         Vector N = new Vector(0,0,0);
         if( firstSurface instanceof Sphere){
             //N=(P0-P)/|P0-P|
@@ -33,7 +33,26 @@ public class Scene {
             normal.normalize();
             N = normal;
         }
-
+        if( firstSurface instanceof Box){
+            if((intersection.x == ((Box) firstSurface).center.x + 0.5*((Box)firstSurface).edgeLength)){
+                N.x = 1;
+            }
+            else if((intersection.x == ((Box) firstSurface).center.x - 0.5*((Box)firstSurface).edgeLength)){
+                N.x = -1;
+            }
+            else if((intersection.y == ((Box) firstSurface).center.y + 0.5*((Box)firstSurface).edgeLength)){
+                N.y = 1;
+            }
+            else if((intersection.y == ((Box) firstSurface).center.y - 0.5*((Box)firstSurface).edgeLength)){
+                N.y = -1;
+            }
+            else if((intersection.z == ((Box) firstSurface).center.z + 0.5*((Box)firstSurface).edgeLength)){
+                N.z = 1;
+            }
+            else if((intersection.z == ((Box) firstSurface).center.z - 0.5*((Box)firstSurface).edgeLength)){
+                N.z = -1;
+            }
+        }
         if( firstSurface instanceof Plane){
             ((Plane) firstSurface).normal.normalize();
             N = ((Plane) firstSurface).normal;
@@ -48,6 +67,7 @@ public class Scene {
         int index = 0;
         if(firstSurface instanceof Sphere){index = ((Sphere) firstSurface).materialIndex;}
         if(firstSurface instanceof Plane){index = ((Plane) firstSurface).materialIndex;}
+        if(firstSurface instanceof Box){index = ((Box) firstSurface).materialIndex;}
         Material mat = materials.get(index - 1);
 
         for (Light light : this.lights) {
