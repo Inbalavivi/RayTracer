@@ -3,6 +3,7 @@ public class Box implements Surface {
     Vector center;
     Double edgeLength;
     int materialIndex;
+
     Vector minExtent;
     Vector maxExtent;
 
@@ -11,8 +12,9 @@ public class Box implements Surface {
         this.edgeLength = edgeLength;
         this.materialIndex=materialIndex;
         // min and max are the minimum and maximum extent of the bounding box. easier way to compute intersection.
-        this.minExtent = null;
-        this.maxExtent = null;
+        Vector r_vec = new Vector(edgeLength/2,edgeLength/2,edgeLength/2);
+        this.minExtent = center.add(r_vec.scalarMult(-1));
+        this.maxExtent = center.add(r_vec);
     }
 
     public double intersect(Ray ray)  {
@@ -27,7 +29,6 @@ public class Box implements Surface {
             tmin = tmax;
             tmax = temp;
         }
-
         double tymin = (minExtent.y - ray.p0.y) / ray.v.y;
         double tymax = (maxExtent.y - ray.p0.y) / ray.v.y;
 
@@ -37,13 +38,9 @@ public class Box implements Surface {
             tymin = tymax;
             tymax = temp;
         }
-
-        if ((tmin > tymax) || (tymin > tmax)) return -1;
-
+        if ((tmin > tymax) || (tymin > tmax)) return 0;
         if (tymin > tmin) tmin = tymin;
-
         if (tymax < tmax) tmax = tymax;
-
         double tzmin = (minExtent.z - ray.p0.z) / ray.v.z;
         double tzmax = (maxExtent.z - ray.p0.z) / ray.v.z;
 
@@ -54,10 +51,8 @@ public class Box implements Surface {
             tzmax = temp;
         }
 
-        if ((tmin > tzmax) || (tzmin > tmax)) return -1;
-
+        if ((tmin > tzmax) || (tzmin > tmax)) return 0;
         if (tzmin > tmin) tmin = tzmin;
-
         if (tzmax < tmax) tmax = tzmax;
 
         return tmin;
