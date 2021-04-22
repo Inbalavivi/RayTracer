@@ -190,21 +190,21 @@ public class RayTracer {
 
 		// The main loop
 		// P = E + v_z*f
-		Vector P = (camera.position).add(v_z.scalarMult(camera.screenDistance));
+		Vector Pixel = (camera.position).add(v_z.scalarMult(camera.screenDistance));
 		double screenHeight = (imageHeight * camera.screenWidth)/ imageWidth ;
 		// p0 = P - width*v_x - height*v_y
-		Vector P0 = (v_x.scalarMult(camera.screenWidth * (-1) / 2)).add( v_y.scalarMult(screenHeight * (-1) / 2)).add(P);
+		Vector P0 = (v_x.scalarMult(camera.screenWidth * (-1) / 2)).add( v_y.scalarMult(screenHeight * (-1) / 2)).add(Pixel);
 
 		for (int y = 0; y <imageHeight ; y++) {
-			P = P0;
+			Pixel = P0;
 			for (int x = 0; x < imageWidth; x++) {
 				Vector pixelColor = new Vector(0.0, 0.0, 0.0);
 				double heightOffset = 0;
 				double widthOffset = 0;
-				P = (P.add(v_y.scalarMult(heightOffset))).add(v_x.scalarMult(widthOffset));
+				Pixel = (Pixel.add(v_y.scalarMult(heightOffset))).add(v_x.scalarMult(widthOffset));
 				// Ray = E + t*(P - E )
-				Ray ray = new Ray(camera.position, P.add(camera.position.scalarMult(-1)));
-
+				Ray ray = new Ray(camera.position, Pixel.add(camera.position.scalarMult(-1)));
+				Intersection intersection = Intersection.getMinIntersection(ray, surfaces);
 //				Vector black_color = new Vector(0.0,0.0,0);
 //				if ( camera.fishEye == true ){
 //					Vector X_if = ray.v.scalarMult(-1);
@@ -214,23 +214,27 @@ public class RayTracer {
 //						ray.v = X_ip;  //Vec_X_ip;  the new pixel! now the ray will go trough X_ip instead of X_if
 //					}
 //				}
-				boolean isBlack = false;
-				Vector black_color = new Vector(0.0,0.0,0);
-				double teta = 0 ;
-				if ( camera.fishEye == true ){
-					Vector X_if = ray.p0;
 
+				Vector black_color = new Vector(0.0,0.0,0);
+				Vector white_color = new Vector(1.0,1.0,1.0);
+				double teta;
+				double check_teta =0;
+				if ( camera.fishEye == true ){
+					Vector X_if = Pixel;
+					//X_if.normalize();
 					teta = fishEye.calculateTeta(camera.lookAt, X_if, camera);
-					if (fishEye.checkTeta(teta) == true){
+					check_teta = fishEye.handleTeta(teta);
+					if (check_teta == 3){
 						Vector X_ip = fishEye.findXip(camera.lookAt, X_if, camera);
-						ray.p0 = X_ip;  //Vec_X_ip;  the new pixel! now the ray will go trough X_ip instead of X_if
-					}
-					else{
-						isBlack = true;
+						//Vec_X_ip;  the new pixel! now the ray will go trough X_ip instead of X_if
+						Vector ray_direction =  X_ip.add(camera.position.scalarMult(-1));
+						ray_direction.normalize();
+						Ray new_ray_for_Xip = new Ray(camera.position,ray_direction);
+						intersection = Intersection.getMinIntersection(new_ray_for_Xip, surfaces);
+
 					}
 				}
 
-				Intersection intersection = Intersection.getMinIntersection(ray, surfaces);
 
 				if (intersection.min_t == Double.MAX_VALUE) { // default min_t == infinity  ==> there is no intersection
 					pixelColor = pixelColor.add((set.backgroundCol));
@@ -250,21 +254,20 @@ public class RayTracer {
 				// Each of the red, green and blue components should be a byte, i.e. 0-255
 
 
-//				if ( camera.fishEye == true ){
-//					Vector X_if = ray.v;
-//					double teta = fishEye.calculateTeta(camera.lookAt, X_if, camera);
-//					if (fishEye.checkTeta(teta) == false){
-//						pixelColor = black_color;
-//
-//					}
-//				}
-				//if (isBlack == true){pixelColor.x = 0;}
+				if ( camera.fishEye == true ){
+					if (check_teta == 2){
+						pixelColor = black_color;
+					}
+					if (check_teta == 1){
+						pixelColor = white_color;
+					}
+				}
 
 				rgbData[(imageWidth *y +x) * 3]    = (byte) (pixelColor.x * 255 );
 				rgbData[(imageWidth *y +x) * 3 + 1] = (byte) (pixelColor.y * 255);
 				rgbData[(imageWidth *y +x)  * 3 + 2] = (byte) (pixelColor.z * 255);
 				//move one pixel along the vector v_x
-				P = P.add(v_x.scalarMult(camera.screenWidth/imageWidth));
+				Pixel = Pixel.add(v_x.scalarMult(camera.screenWidth/imageWidth));
 			}
 			//move one pixel along the vector v_y
 			P0 = P0.add(v_y.scalarMult(screenHeight/imageHeight));

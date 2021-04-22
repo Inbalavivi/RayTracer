@@ -2,16 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0ab0e3f8-bfe4-466e-ade3-91de793e457a" name="Default Changelist" comment="more transparency">
-      <change afterPath="$PROJECT_DIR$/src/Box.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/fishEye.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer$RayTracerException.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer$RayTracerException.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pollllll.png" beforeDir="false" afterPath="$PROJECT_DIR$/pollllll.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Camera.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Intersection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Intersection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Ray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ray.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sp.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/sper.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/RayTracer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RayTracer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishEye.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishEye.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +59,7 @@
       <option name="ALTERNATIVE_JRE_PATH" value="$PROJECT_DIR$/../.jdks/openjdk-16" />
       <option name="MAIN_CLASS_NAME" value="RayTracer" />
       <module name="Graphics_RayTracing" />
-      <option name="PROGRAM_PARAMETERS" value="Pool_fish.txt poll_fishhhh.png " />
+      <option name="PROGRAM_PARAMETERS" value="Room1_fish.txt Room1_fish.png " />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -95,7 +92,13 @@
       <option name="presentableId" value="LOCAL‎00003" />
       <updated>1619015506352</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL‎00004" summary="more transparency">
+      <created>1619077531724</created>
+      <option name="number" value="LOCAL‎00004" />
+      <option name="presentableId" value="LOCAL‎00004" />
+      <updated>1619077531724</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
