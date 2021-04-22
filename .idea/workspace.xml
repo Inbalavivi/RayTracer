@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0ab0e3f8-bfe4-466e-ade3-91de793e457a" name="Default Changelist" comment="box">
+    <list default="true" id="0ab0e3f8-bfe4-466e-ade3-91de793e457a" name="Default Changelist" comment="box is working">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Box.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Box.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Scene.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Scene.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/room1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/fishEye.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/fishEye.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Box.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Box.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/RayTracer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RayTracer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scene.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/‏‏Room_box.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Room_box.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/fishEye.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishEye.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,12 +56,17 @@
       <recent name="C:\Users\Dell\Graphics_RayTracing\src" />
     </key>
   </component>
+  <component name="RunAnythingCache">
+    <option name="myCommands">
+      <command value="checkIfIntersect" />
+    </option>
+  </component>
   <component name="RunManager">
     <configuration name="RayTracer" type="Application" factoryName="Application" folderName="New Folder">
       <option name="ALTERNATIVE_JRE_PATH" value="$PROJECT_DIR$/../.jdks/openjdk-16" />
       <option name="MAIN_CLASS_NAME" value="RayTracer" />
       <module name="Graphics_RayTracing" />
-      <option name="PROGRAM_PARAMETERS" value="Pool_fish_box.txt Pool_fish_box.png " />
+      <option name="PROGRAM_PARAMETERS" value="Pool_fish.txt Pool_fish.png " />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -116,7 +123,13 @@
       <option name="presentableId" value="LOCAL‎00007" />
       <updated>1619093796699</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL‎00008" summary="box is working">
+      <created>1619104450398</created>
+      <option name="number" value="LOCAL‎00008" />
+      <option name="presentableId" value="LOCAL‎00008" />
+      <updated>1619104450399</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -138,6 +151,7 @@
     <MESSAGE value="more transparency" />
     <MESSAGE value="fish is working !!!! yayyy" />
     <MESSAGE value="box" />
-    <option name="LAST_COMMIT_MESSAGE" value="box" />
+    <MESSAGE value="box is working" />
+    <option name="LAST_COMMIT_MESSAGE" value="box is working" />
   </component>
 </project>

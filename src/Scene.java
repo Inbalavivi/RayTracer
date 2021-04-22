@@ -33,23 +33,44 @@ public class Scene {
             normal.normalize();
             N = normal;
         }
-        if( firstSurface instanceof Box){
-            if((intersection.x == ((Box) firstSurface).center.x + 0.5*((Box)firstSurface).edgeLength)){
+//        if( firstSurface instanceof Box){ // option 1
+//            if((intersection.x >= ((Box) firstSurface).center.x + 0.5*((Box)firstSurface).edgeLength)){
+//                N.x = 1;
+//            }
+//            else if((intersection.x < ((Box) firstSurface).center.x - 0.5*((Box)firstSurface).edgeLength)){
+//                N.x = -1;
+//            }
+//            else if((intersection.y >= ((Box) firstSurface).center.y + 0.5*((Box)firstSurface).edgeLength)){
+//                N.y = 1;
+//            }
+//            else if((intersection.y < ((Box) firstSurface).center.y - 0.5*((Box)firstSurface).edgeLength)){
+//                N.y = -1;
+//            }
+//            else if((intersection.z < ((Box) firstSurface).center.z + 0.5*((Box)firstSurface).edgeLength)){
+//                N.z = 1;
+//            }
+//            else if((intersection.z >= ((Box) firstSurface).center.z - 0.5*((Box)firstSurface).edgeLength)){
+//                N.z = -1;
+//            }
+//        }
+
+        if( firstSurface instanceof Box){ /// option 2
+            if((intersection.x >= ((Box) firstSurface).center.x + 0.5*((Box)firstSurface).edgeLength)){
                 N.x = 1;
             }
-            else if((intersection.x == ((Box) firstSurface).center.x - 0.5*((Box)firstSurface).edgeLength)){
+            else if((intersection.x < ((Box) firstSurface).center.x - 0.5*((Box)firstSurface).edgeLength)){
                 N.x = -1;
             }
-            else if((intersection.y == ((Box) firstSurface).center.y + 0.5*((Box)firstSurface).edgeLength)){
+            else if((intersection.y <= ((Box) firstSurface).center.y + 0.5*((Box)firstSurface).edgeLength)){
                 N.y = 1;
             }
-            else if((intersection.y == ((Box) firstSurface).center.y - 0.5*((Box)firstSurface).edgeLength)){
+            else if((intersection.y > ((Box) firstSurface).center.y - 0.5*((Box)firstSurface).edgeLength)){
                 N.y = -1;
             }
-            else if((intersection.z == ((Box) firstSurface).center.z + 0.5*((Box)firstSurface).edgeLength)){
+            else if((intersection.z <= ((Box) firstSurface).center.z + 0.5*((Box)firstSurface).edgeLength)){
                 N.z = 1;
             }
-            else if((intersection.z == ((Box) firstSurface).center.z - 0.5*((Box)firstSurface).edgeLength)){
+            else if((intersection.z > ((Box) firstSurface).center.z - 0.5*((Box)firstSurface).edgeLength)){
                 N.z = -1;
             }
         }
@@ -177,28 +198,37 @@ public class Scene {
 //        return col;
 //    }
     public double softShadow(Light light, Vector planeNormal, Vector intersectionPoint) {
+        //1. Find a plane which is perpendicular to the ray.
         Plane plane = new Plane(planeNormal,planeNormal.dotProduct(light.position),-1);
-        Vector uOnPlane = plane.findVec(light.position); //Specifying the Viewing Coordinates system
+        //2. Define a rectangle on that plane, centered at the light source and as wide as the defined light radius.
+        Vector uOnPlane = plane.findVec(light.position);
+        uOnPlane.normalize();
         Vector vOnPlane = planeNormal.crossProduct(uOnPlane);
         vOnPlane.normalize();
-        uOnPlane.normalize();
-        Vector edge = (light.position.add(vOnPlane.scalarMult(-0.5 * light.radius))).add(uOnPlane.scalarMult(-0.5 * light.radius));
-        Vector V = (edge.add(vOnPlane.scalarMult(light.radius))).add(edge.scalarMult(-1));
-        Vector U = (edge.add(uOnPlane.scalarMult(light.radius))).add(edge.scalarMult(-1));
+        Vector zOnPlane = (light.position.add(vOnPlane.scalarMult(-0.5 * light.radius))).add(uOnPlane.scalarMult(-0.5 * light.radius));
+
+        Vector V = (zOnPlane.add(vOnPlane.scalarMult(light.radius))).add(zOnPlane.scalarMult(-1));
+        Vector U = (zOnPlane.add(uOnPlane.scalarMult(light.radius))).add(zOnPlane.scalarMult(-1));
         double scalar = 1.0 / this.settings.numShadowRays;
         Vector v = V.scalarMult(scalar);
         Vector u = U.scalarMult(scalar);
+
+        //3. Divide the rectangle into a grid of N*N cells, where N is the number of shadow
+        //rays from the scene parameters.
         double sum = 0;
         for (int i = 0; i < this.settings.numShadowRays; i++) {
             for (int j = 0; j < this.settings.numShadowRays; j++) {
-                sum += shootRay( edge, v, u, i, j, intersectionPoint);
+//                5. Aggregate the values of all rays that were cast and count how many of them hit the required point on the surface.
+                sum += shootRay( zOnPlane, v, u, i, j, intersectionPoint);
             }
         }
         //this light source will be multiplied by the number of rays that hit the surface divided by the total number of rays we sent.
-        return sum / Math.pow(this.settings.numShadowRays , 2);
+        return (sum / Math.pow(this.settings.numShadowRays , 2));
+        //return 1; // green
     }
 
     public int shootRay( Vector edge, Vector v, Vector u, int i, int j, Vector intersection) {
+        //4. we select a random point in each cell, and shoot the ray from the selected random point to the light.
         Random rand = new Random();
         double x = rand.nextDouble();
         double y = rand.nextDouble();
