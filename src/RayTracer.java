@@ -165,8 +165,9 @@ public class RayTracer {
 
 		if ((camera == null) || (set == null) || (surfaces.size() == 0) || (lights.size() == 0) || (materials.size() == 0)){
 			System.out.println("Scene is not valid");
+			return;
 		}
-		scene = new Scene(camera, set, surfaces, lights, materials , newSurfaces);
+		scene = new Scene(camera, set, surfaces, lights, materials);
 		System.out.println("Finished parsing scene file " + sceneFileName);
 	}
 
@@ -178,6 +179,7 @@ public class RayTracer {
 		long startTime = System.currentTimeMillis();
 		// Create a byte array to hold the pixel data:
 		byte[] rgbData = new byte[this.imageWidth * this.imageHeight * 3];
+
 		//define axis
 		Vector v_x = camera.upVector.crossProduct(camera.lookAt);
 		v_x.normalize();
@@ -194,7 +196,6 @@ public class RayTracer {
 		double screenHeight = (imageHeight * camera.screenWidth)/ imageWidth ;
 		// p0 = P - width*v_x - height*v_y
 		Vector P0 = (v_x.scalarMult(camera.screenWidth * (-1) / 2)).add( v_y.scalarMult(screenHeight * (-1) / 2)).add(Pixel);
-
 		for (int y = 0; y <imageHeight ; y++) {
 			Pixel = P0;
 			for (int x = 0; x < imageWidth; x++) {
@@ -212,7 +213,6 @@ public class RayTracer {
 				double check_teta =0;
 				if ( camera.fishEye == true ){
 					Vector X_if = Pixel;
-					//X_if.normalize();
 					teta = fishEye.calculateTeta(camera.lookAt, X_if, camera);
 					check_teta = fishEye.handleTeta(teta);
 					if (check_teta == 3){

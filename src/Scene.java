@@ -8,16 +8,14 @@ public class Scene {
     List<Surface> surfaces;
     List<Light> lights;
     List<Material> materials;
-    List<Surface> newSurfaces;
     double epsilon = 0.005;
 
-    public Scene(Camera cam, Settings settings, List<Surface> surfaces, List<Light> lights, List<Material> materials, List<Surface> newSurfaces){
+    public Scene(Camera cam, Settings settings, List<Surface> surfaces, List<Light> lights, List<Material> materials){
         this.cam = cam;
         this.settings = settings;
         this.surfaces = surfaces;
         this.lights = lights;
         this.materials = materials;
-        this.newSurfaces = newSurfaces;
     }
     public Vector getColor(Surface firstSurface,double min_t, Ray ray, int recDepth) {
         if (recDepth == 0) { //return the background
@@ -33,28 +31,8 @@ public class Scene {
             normal.normalize();
             N = normal;
         }
-//        if( firstSurface instanceof Box){ // option 1
-//            if((intersection.x >= ((Box) firstSurface).center.x + 0.5*((Box)firstSurface).edgeLength)){
-//                N.x = 1;
-//            }
-//            else if((intersection.x < ((Box) firstSurface).center.x - 0.5*((Box)firstSurface).edgeLength)){
-//                N.x = -1;
-//            }
-//            else if((intersection.y >= ((Box) firstSurface).center.y + 0.5*((Box)firstSurface).edgeLength)){
-//                N.y = 1;
-//            }
-//            else if((intersection.y < ((Box) firstSurface).center.y - 0.5*((Box)firstSurface).edgeLength)){
-//                N.y = -1;
-//            }
-//            else if((intersection.z < ((Box) firstSurface).center.z + 0.5*((Box)firstSurface).edgeLength)){
-//                N.z = 1;
-//            }
-//            else if((intersection.z >= ((Box) firstSurface).center.z - 0.5*((Box)firstSurface).edgeLength)){
-//                N.z = -1;
-//            }
-//        }
 
-        if( firstSurface instanceof Box){ /// option 2
+        if( firstSurface instanceof Box){
             if((intersection.x >= ((Box) firstSurface).center.x + 0.5*((Box)firstSurface).edgeLength)){
                 N.x = 1;
             }
@@ -112,8 +90,7 @@ public class Scene {
         if (mat.reflection.x > 0 || mat.reflection.y > 0 || mat.reflection.z > 0) {
             reflectionColor = ReflectionColor(ray, N, intersection, mat, recDepth-1);
         }
-        //List<Intersection> check =new ArrayList<Intersection>();
-        //check= Intersection.getAllIntersections(ray,surfaces);
+
         Vector transfCol = new Vector(0,0,0);
 
         if (mat.transparency > 0) {
@@ -161,7 +138,7 @@ public class Scene {
         Ray transRay = new Ray(intersectionPoint.add(ray.v.scalarMult(epsilon)), ray.v);
         List<Intersection> inters_list = Intersection.getAllIntersections(transRay, surfaces);
 
-            for (Intersection inter : inters_list ){
+        for (Intersection inter : inters_list ){
             t = inter.min_t;
             surface = inter.firstSurface;
             if (t == Double.MAX_VALUE) {
@@ -170,33 +147,14 @@ public class Scene {
                 Material mat = materials.get(inter.firstSurface.getMatIndex() - 1);
                 col = col.add(getColor(surface, t, transRay, recDepth - 1).scalarMult(1-mat.transparency));
             }
-            //this.newSurfaces.remove(surface);
+
         }
         col.checkBound();
         Vector one  = new Vector(1,1, 1);
         return (col.scalarMult(-1)).add(one);
-        //return  col;
+
     }
 
-//    public Vector TransparencyColors( Ray ray, Vector intersectionPoint, int recDepth) {
-//        Vector col=new Vector(0,0,0);
-//        double min_t;
-//        Surface firstSurface;
-//        Ray transRay = new Ray(intersectionPoint.add(ray.v.scalarMult(epsilon)), ray.v);
-//        List<Intersection> intersection = Intersection.getAllIntersections(transRay, newSurfaces);
-//
-//        min_t = intersection.min_t;
-//        firstSurface = intersection.firstSurface;
-//        this.newSurfaces.remove(firstSurface);
-//        if (min_t == Double.MAX_VALUE) {
-//            col =this.settings.backgroundCol;
-//
-//        } else {
-//            col=col.add(getColor(firstSurface, min_t, transRay, recDepth - 1));
-//        }
-//        col.checkBound();
-//        return col;
-//    }
     public double softShadow(Light light, Vector planeNormal, Vector intersectionPoint) {
         //1. Find a plane which is perpendicular to the ray.
         Plane plane = new Plane(planeNormal,planeNormal.dotProduct(light.position),-1);
@@ -224,7 +182,7 @@ public class Scene {
         }
         //this light source will be multiplied by the number of rays that hit the surface divided by the total number of rays we sent.
         return (sum / Math.pow(this.settings.numShadowRays , 2));
-        //return 1; // green
+
     }
 
     public int shootRay( Vector edge, Vector v, Vector u, int i, int j, Vector intersection) {
@@ -237,12 +195,17 @@ public class Scene {
         double directionMagnitude = Math.sqrt(pointDirection.dotProduct(pointDirection)); // ||pointDirection||
         pointDirection.normalize();
         Ray lightRay = new Ray(intersection.add(pointDirection.scalarMult(epsilon)), pointDirection);
-        if(Intersection.checkIfIntersect(lightRay, this, directionMagnitude)==0){
-            return 1;
+        //check if there is an intersection
+        double t;
+        for (Surface s : this.surfaces) {
+            t = s.intersect(lightRay);
+            if (t < directionMagnitude && t > 0) {
+                return 0;
+            }
         }
-        return 0;
-    }
+        return 1;
 
+    }
 
 }
 

@@ -1,6 +1,6 @@
 public class Ray {
-	Vector p0;  //basePoint = camPosition;
-	Vector v;  	//directionVector;
+	Vector p0;
+	Vector v;
 	//Ray: P = P0 + tV
 	public Ray(Vector camPos, Vector v ) {
 		this.p0 = camPos;
