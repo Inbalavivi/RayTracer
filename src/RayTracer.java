@@ -25,6 +25,8 @@ public class RayTracer {
 	Settings set = null;
 	Scene scene = null;
 
+	String excelFilePath="RayTracer.xlsx";
+
 	/**
 	 * Runs the ray tracer. Takes scene file, output image file and image size as input.
 	 */

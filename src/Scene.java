@@ -66,7 +66,7 @@ public class Scene {
         int index = 0;
         if(firstSurface instanceof Sphere){index = ((Sphere) firstSurface).materialIndex;}
         if(firstSurface instanceof Plane){index = ((Plane) firstSurface).materialIndex;}
-        if(firstSurface instanceof Box){index = ((Box) firstSurface).materialIndex;}
+        if(firstSurface instanceof Box){index = ((Box) firstSurface).getMatIndex();}
         Material mat = materials.get(index - 1);
 
         for (Light light : this.lights) {

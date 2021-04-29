@@ -1,33 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="RayTrace:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="0ab0e3f8-bfe4-466e-ade3-91de793e457a" name="Default Changelist" comment="tryng to fix shoft shadows">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/RayTrace_jar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pool.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pool_box.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pool_box2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pool_box3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pool_box_fish.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pool_fish.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pool_fish_box.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Room1_fish.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Room_box.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Room_box1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Room_box2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trans_box.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Transparency.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/box_trans.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/boxes.png" beforeDir="false" afterPath="$PROJECT_DIR$/boxes.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/boxes_trans.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spheres.png" beforeDir="false" afterPath="$PROJECT_DIR$/spheres.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Box.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Box.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Intersection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Intersection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Material.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Material.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Ray.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ray.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Boxes.txt" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/Boxes.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Graphics_RayTracing.iml" beforeDir="false" afterPath="$PROJECT_DIR$/RayTracer.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pool.png" beforeDir="false" afterPath="$PROJECT_DIR$/Pool.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pool.txt" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/Pool.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pool_box.txt" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/Pool_box.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pool_fish.txt" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/Pool_fish.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pool_fish_box.txt" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/Pool_fish_box.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Room1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/Room1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Room1_fish.txt" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/Room1_fish.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Room_box.txt" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/Room_box.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Spheres.txt" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/Spheres.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Transparency.txt" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/Transparency.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/boxes.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/boxes_trans.txt" beforeDir="false" afterPath="$PROJECT_DIR$/scenes/boxes_trans.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/btrans.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Box.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Camera.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Intersection.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Light.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Material.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Plane.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Ray.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer$RayTracerException.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/RayTracer.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Scene.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Settings.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Sphere.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Surface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/Vector.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Graphics_RayTracing/fishEye.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pollfish.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pollfishbox.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/poolbox.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/room1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/roombox.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/spheres.png" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/RayTracer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/RayTracer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Scene.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Scene.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/fishEye.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/fishEye.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/trans.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,14 +84,17 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Global Libraries" />
-    <property name="project.structure.proportion" value="0.15" />
-    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/out" />
+    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.proportion" value="0.1468429" />
+    <property name="project.structure.side.proportion" value="0.17241377" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Dell\graphics\RayTracer" />
+      <recent name="C:\Users\Dell\graphics\RayTracer\scenes" />
       <recent name="C:\Users\Dell\Graphics_RayTracing\src" />
     </key>
   </component>
@@ -80,10 +105,58 @@
   </component>
   <component name="RunManager">
     <configuration name="RayTracer" type="Application" factoryName="Application" folderName="New Folder">
-      <option name="ALTERNATIVE_JRE_PATH" value="$PROJECT_DIR$/../.jdks/openjdk-16" />
+      <option name="ALTERNATIVE_JRE_PATH" value="adopt-openjdk-13" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="RayTracer" />
-      <module name="Graphics_RayTracing" />
-      <option name="PROGRAM_PARAMETERS" value="Boxes.txt boxes.png " />
+      <module name="RayTracer" />
+      <option name="PROGRAM_PARAMETERS" value="scenes\Pool_fish_box.txt Pool_fish_box.png " />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="RayTracer" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="RayTracer" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
+      <option name="filePath" />
+      <option name="vmParameters" />
+      <option name="alternativeJrePath" />
+      <option name="programParameters" />
+      <option name="passParentEnvs" value="true" />
+      <option name="workingDirectory" />
+      <option name="isAlternativeJrePathEnabled" value="false" />
+      <option name="VM_PARAMETERS" />
+      <option name="PROGRAM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="WORKING_DIRECTORY" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
