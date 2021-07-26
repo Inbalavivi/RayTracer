@@ -38,4 +38,5 @@ java -jar RayTrace.jar scenes\Spheres.txt scenes\Spheres.png 500 500
 
 ### Team Members:
 Hen Dahan- hendahan12@gmail.com
+
 Inbal Avivi- inbalavivi2@gmail.com
