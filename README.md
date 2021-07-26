@@ -4,10 +4,10 @@ This project was built as part of "Fundamentals of Computer Graphics, Vision and
 ### Description:
 This is an implementation of a basic ray tracer in Java. A ray tracer shoots rays from the observer's eye (the camera) through a screen and into a scene which contains one or more surfaces. It calculates the rays intersection with the surfaces, finds the nearest intersection and calculates the color of the surface according to its material and lighting conditions.
 
-### Surfaces:
+### Implemented Surfaces:
 **Spheres** - Each sphere is defined by the position of its center and its radius
 
-**Infinite Planes** - Each plane is defined by its normal N and an offset c along the normal. A point on the P plane will satisfy the formula P⋅N = c.
+**Infinite Planes** - Each plane is defined by its normal N and an offset c along the normal.
 
 **Boxes** - Each box is defined by the position of its center (x, y, z) and its edge length (scalar). All boxes are axis aligned (meaning no rotations) to make the computation of intersections easier.
 
