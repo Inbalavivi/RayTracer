@@ -20,6 +20,7 @@ The first parameter is the scene file, and the second is the name of the image f
 
 ### Output:
 
+
 The rendered scene (.png file).
 
 ### Execution Instructions:
